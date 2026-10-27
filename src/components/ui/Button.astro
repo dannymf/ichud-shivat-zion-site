@@ -1,0 +1,131 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/**
+ * A link styled as a button. (Actions that stay on the page should use a real <button>.)
+ *
+ * - `plaque`: the pointed-end shape from the community's posters, for primary actions.
+ * - `outline`: a rounded outline, for secondary actions.
+ * - `link`: underlined text, for tertiary actions.
+ */
+type Props = HTMLAttributes<'a'> & {
+  href: string;
+  variant?: 'plaque' | 'outline' | 'link';
+  tone?: 'navy' | 'amber' | 'ivory';
+  size?: 'md' | 'lg';
+};
+
+const {
+  href,
+  variant = 'plaque',
+  tone = 'navy',
+  size = 'md',
+  class: className,
+  ...attrs
+} = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={['button', `button--${variant}`, `button--${tone}`, `button--${size}`, className]}
+  {...attrs}
+>
+  <slot />
+</a>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    min-block-size: 2.75rem;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  /* Plaque */
+  .button--plaque {
+    block-size: 3.25rem;
+    padding-inline: 2.25rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-base);
+    clip-path: polygon(
+      var(--plaque-point) 0,
+      calc(100% - var(--plaque-point)) 0,
+      100% 50%,
+      calc(100% - var(--plaque-point)) 100%,
+      var(--plaque-point) 100%,
+      0 50%
+    );
+  }
+
+  .button--plaque.button--lg {
+    block-size: 3.625rem;
+    padding-inline: 2.75rem;
+    font-size: var(--text-lg);
+  }
+
+  .button--plaque.button--navy {
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+
+  .button--plaque.button--amber {
+    background: var(--color-amber);
+    color: var(--color-navy);
+  }
+
+  .button--plaque.button--ivory {
+    background: var(--color-ivory);
+    color: var(--color-navy);
+  }
+
+  .button--plaque:hover {
+    filter: brightness(1.08);
+  }
+
+  /* Clip-path hides the usual outline, so draw the focus ring inside the shape. */
+  .button--plaque:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 3px var(--glass-cobalt);
+  }
+
+  /* Outline */
+  .button--outline {
+    block-size: 3rem;
+    padding-inline: 1.5rem;
+    border: 1.5px solid currentColor;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-sm);
+  }
+
+  .button--outline.button--navy {
+    color: var(--color-navy);
+  }
+
+  .button--outline.button--ivory {
+    color: var(--color-ivory);
+  }
+
+  .button--outline:hover {
+    background: color-mix(in srgb, currentColor 8%, transparent);
+  }
+
+  /* Link */
+  .button--link {
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 1px;
+  }
+
+  .button--link.button--navy {
+    color: var(--color-navy);
+  }
+
+  .button--link.button--ivory {
+    color: var(--color-ivory);
+    text-decoration-color: var(--color-gold-light);
+  }
+</style>

@@ -1,0 +1,78 @@
+/*
+ * Design tokens. Every colour, font, size and spacing value used by components
+ * should come from here, so the look can be changed in one place.
+ */
+:root {
+  /* Grounds */
+  --color-ivory: #f7f1e4;
+  --color-sand: #eee4cf;
+  --color-paper: #fcf9f0;
+
+  /* Ink */
+  --color-navy: #0f2552;
+  --color-navy-deep: #0a1a3c;
+  --color-ink: #1c2542;
+  --color-ink-soft: #454b62;
+  --color-muted: #555b70;
+  --color-on-dark-muted: #c9cedd;
+
+  /* Gold: lines and ornaments use --color-gold; text uses --color-gold-text (passes 4.5:1 on ivory) */
+  --color-gold: #b08d3e;
+  --color-gold-text: #7a5b14;
+  --color-gold-light: #e6c77e;
+
+  /* Accents taken from the synagogue's stained glass */
+  --color-forest: #23603b;
+  --color-amber: #f2bd3b;
+  --glass-cobalt: #1e50c8;
+  --glass-teal: #1493b3;
+  --glass-green: #2f8f4e;
+  --glass-amber: #f2bd3b;
+  --glass-orange: #e0761c;
+  --glass-red: #cf3a2b;
+
+  /* Midrash Aviv sub-brand */
+  --color-aviv: #2f62a8;
+  --color-aviv-ray: #376bb1;
+  --color-aviv-ink: #0e2a4f;
+  --color-aviv-highlight: #fbe3a0;
+
+  /* Type. --font-kehila, --font-frank-ruhl and --font-aviv are set by the Fonts API (astro.config.mjs). */
+  --font-display: var(--font-kehila), var(--font-frank-ruhl), serif;
+  --font-body: var(--font-frank-ruhl), serif;
+  --font-aviv-display: var(--font-aviv), var(--font-frank-ruhl), sans-serif;
+
+  --text-sm: 1rem; /* 16px */
+  --text-base: 1.1875rem; /* 19px */
+  --text-lg: 1.3125rem; /* 21px */
+  --text-xl: clamp(1.5rem, 1.2rem + 1vw, 1.75rem);
+  --text-2xl: clamp(2rem, 1.4rem + 2vw, 2.75rem);
+  --text-3xl: clamp(2.5rem, 1.6rem + 3vw, 3.5rem);
+  --text-hero: clamp(3.25rem, 1.8rem + 5vw, 5.5rem);
+
+  --leading-tight: 1.1;
+  --leading-body: 1.7;
+
+  /* Space */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --content-max: 75rem; /* 1200px */
+
+  /* Shape */
+  --radius-sm: 0.75rem;
+  --radius-md: 1.125rem;
+  --radius-pill: 999px;
+  --plaque-point: 1rem; /* depth of the pointed ends on plaque buttons and titles */
+
+  /* Layout */
+  --header-height: 5rem;
+  --ribbon-height: 0.625rem;
+}

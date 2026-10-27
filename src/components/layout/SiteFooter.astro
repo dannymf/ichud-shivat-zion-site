@@ -1,0 +1,156 @@
+---
+import Logo from '@/components/ui/Logo.astro';
+import { type Lang, useTranslations } from '@/i18n/ui';
+import { footerNav } from '@/lib/navigation';
+import { site, telHref } from '@/lib/settings';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__ribbon" aria-hidden="true"></div>
+  <div class="site-footer__inner">
+    <div class="site-footer__columns">
+      <div class="site-footer__brand">
+        <div class="site-footer__wordmark">
+          <Logo size={60} />
+          <span>{t('site.name')}</span>
+        </div>
+        <p>{t('site.description')}</p>
+      </div>
+
+      <nav aria-label={t('nav.footer')}>
+        <ul class="site-footer__nav">
+          {footerNav.map((item) => (
+            <li>
+              <a href={`#${item.id}`}>{t(item.label)}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <address class="site-footer__office">
+        <span class="site-footer__label">{t('footer.office')}</span>
+        <span>
+          {site.address.street}, {site.address.city}
+        </span>
+        <a href={telHref(site.phone)} dir="ltr">
+          {site.phone}
+        </a>
+        <span class="site-footer__muted">{site.officeHours}</span>
+      </address>
+    </div>
+
+    <p class="site-footer__legal">
+      © {year} · {t('footer.rights')}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-navy-deep);
+    color: var(--color-ivory);
+    scroll-snap-align: end;
+  }
+
+  .site-footer__ribbon {
+    block-size: var(--ribbon-height);
+    background: url('../../assets/images/glass-strip.jpg') center / cover;
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-7);
+    max-inline-size: var(--content-max);
+    margin-inline: auto;
+    padding: var(--space-8) var(--gutter) var(--space-6);
+  }
+
+  .site-footer__columns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-7) var(--space-8);
+  }
+
+  .site-footer__brand {
+    flex: 1 1 20rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .site-footer__brand p {
+    max-inline-size: 25rem;
+    color: var(--color-on-dark-muted);
+  }
+
+  .site-footer__wordmark {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--color-gold-light);
+  }
+
+  .site-footer__wordmark span {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.875rem;
+    line-height: 1;
+    color: var(--color-ivory);
+  }
+
+  .site-footer__nav {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .site-footer__nav a,
+  .site-footer__office a {
+    display: inline-block;
+    padding-block: var(--space-1);
+    color: var(--color-ivory);
+    text-decoration: none;
+  }
+
+  .site-footer__nav a:hover,
+  .site-footer__office a:hover {
+    text-decoration: underline;
+  }
+
+  .site-footer__office {
+    flex: 0 1 18rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-style: normal;
+  }
+
+  .site-footer__label {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-gold-light);
+  }
+
+  .site-footer__muted,
+  .site-footer__legal {
+    color: var(--color-on-dark-muted);
+  }
+
+  .site-footer__legal {
+    padding-block-start: var(--space-5);
+    border-block-start: 1px solid color-mix(in srgb, var(--color-gold-light) 35%, transparent);
+    font-size: var(--text-sm);
+  }
+</style>
