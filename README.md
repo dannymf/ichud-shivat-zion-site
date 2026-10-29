@@ -15,15 +15,16 @@ npm ci
 npm run dev       # http://localhost:4321
 ```
 
-| Script            | What it does                                        |
-| ----------------- | --------------------------------------------------- |
-| `npm run dev`     | Start the dev server                                |
-| `npm run build`   | Build the static site into `dist/`                  |
-| `npm run preview` | Serve the built site                                |
-| `npm run check`   | Type-check `.astro` and `.ts` files                 |
-| `npm run lint`    | ESLint                                              |
-| `npm run format`  | Format everything with Prettier                     |
-| `npm run verify`  | Formatting, lint, type check and build (same as CI) |
+| Script            | What it does                                          |
+| ----------------- | ----------------------------------------------------- |
+| `npm run dev`     | Start the dev server                                  |
+| `npm run build`   | Build the static site into `dist/`                    |
+| `npm run preview` | Serve the built site                                  |
+| `npm run check`   | Type-check `.astro` and `.ts` files                   |
+| `npm run lint`    | ESLint                                                |
+| `npm test`        | Unit tests (Vitest)                                   |
+| `npm run format`  | Format everything with Prettier                       |
+| `npm run verify`  | Everything CI runs: format, lint, types, tests, build |
 
 ## Project structure
 
@@ -31,15 +32,18 @@ npm run dev       # http://localhost:4321
 src/
   layouts/BaseLayout.astro     <html> shell: language and direction, meta, fonts, header and footer
   components/
-    layout/                    SiteHeader, SiteFooter, Section (one full-screen panel)
-    ui/                        Small building blocks: Button, Divider, Icon, Logo
-    sections/                  One component per home-page section (added in upcoming PRs)
-  content/settings/            Editable site settings (address, phone, links); edited through the CMS
-  lib/                         Plain TypeScript: settings loading and validation, navigation
+    layout/                    SiteHeader, SiteFooter, JoinBand, Section (one full-screen panel)
+    ui/                        Building blocks: Button, SectionHeading, ScheduleCard, Plaque, Avatar…
+    sections/                  One component per home-page section, in page order in pages/index.astro
+  content/                     Everything staff can edit (see docs/content.md)
+  content.config.ts            The `team` content collection
+  lib/                         Plain TypeScript: content loading and validation, the Jewish calendar
   i18n/ui.ts                   Interface strings (labels, accessible names)
   styles/                      tokens.css (design tokens) and global.css (reset and base styles)
   assets/                      Fonts and images processed at build time
-public/                        Files served as-is (favicon)
+public/
+  admin/                       Sveltia CMS (index.html and config.yml)
+docs/                          content.md (what lives where), deployment.md (hosting, CMS sign-in)
 ```
 
 ## Conventions
@@ -69,9 +73,16 @@ public/                        Files served as-is (favicon)
 
 They are registered with Astro's Fonts API in `astro.config.mjs`.
 
+## Editing and deployment
+
+Staff edit content at `/admin/` with [Sveltia CMS](https://github.com/sveltia/sveltia-cms), which
+commits to `main`. The site is hosted on Cloudflare Pages and rebuilt nightly so the Hebrew date and
+Shabbat times stay current. See [docs/content.md](docs/content.md) and
+[docs/deployment.md](docs/deployment.md).
+
 ## Roadmap
 
-1. Scaffold: tooling, CI, tokens, fonts, layout, header and footer, `<Section>` _(this PR)_
+1. Scaffold: tooling, CI, tokens, fonts, layout, header and footer, `<Section>`
 2. Hero, About, Donate, and the WhatsApp band in the footer
 3. Prayer times, with Hebcal for the Hebrew date, parasha, candle lighting and havdalah
 4. Midrash Aviv and the team section
