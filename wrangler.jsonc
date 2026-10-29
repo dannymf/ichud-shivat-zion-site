@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Must match `worker_name` in infra/variables.tf: Terraform attaches the custom domain to this name.
+  "name": "ichud-shivat-zion",
+  "compatibility_date": "2026-10-29",
+  // Static site only: no `main`, so there is no Worker script and nothing is billed per request.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+  },
+  // Keep the *.workers.dev URL until the custom domain is live, but skip per-version preview URLs.
+  "workers_dev": true,
+  "preview_urls": false,
+}

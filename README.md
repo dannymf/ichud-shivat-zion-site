@@ -76,9 +76,9 @@ They are registered with Astro's Fonts API in `astro.config.mjs`.
 ## Editing and deployment
 
 Staff edit content at `/admin/` with [Sveltia CMS](https://github.com/sveltia/sveltia-cms), which
-commits to `main`. The site is hosted on Cloudflare Pages and rebuilt nightly so the Hebrew date and
-Shabbat times stay current. See [docs/content.md](docs/content.md) and
-[docs/deployment.md](docs/deployment.md).
+commits to `main`, and every commit to `main` is deployed to Cloudflare Workers by GitHub Actions.
+The hosting is described in code in [infra/](infra/README.md). See [docs/content.md](docs/content.md)
+and [docs/deployment.md](docs/deployment.md).
 
 ## Before launch
 
@@ -91,4 +91,4 @@ The code is complete; these are content and accounts that only the community can
       WhatsApp group, Midrash Aviv schedule (the build lists any that are still empty)
 - [ ] The donation provider's amount parameter, if it has one
 - [ ] Domain → `site` in `astro.config.mjs` (enables the canonical URL and share image)
-- [ ] Cloudflare Pages, the nightly deploy hook and CMS sign-in ([docs/deployment.md](docs/deployment.md))
+- [ ] Cloudflare deployment ([infra/README.md](infra/README.md)) and CMS sign-in ([docs/deployment.md](docs/deployment.md))

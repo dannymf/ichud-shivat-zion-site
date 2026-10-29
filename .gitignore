@@ -10,6 +10,13 @@ node_modules/
 .env.*
 !.env.example
 
+# terraform (state holds the generated deploy token, so it never leaves this machine)
+infra/.terraform/
+infra/*.tfstate
+infra/*.tfstate.*
+infra/terraform.tfvars
+infra/*.tfplan
+
 # logs and OS files
 npm-debug.log*
 .DS_Store
