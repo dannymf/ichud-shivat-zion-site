@@ -2,10 +2,15 @@
 #
 # Keep these fields in step with the schemas that validate them at build time:
 #   src/lib/settings.ts       → settings/site
-#   src/lib/home-content.ts   → home/hero, about, midrash, team, donate, join
-#   src/lib/prayer-times.ts   → home/prayer-times
+#   src/lib/home-content.ts   → home/*
 #   src/content.config.ts     → team
 # A mismatch shows up as a failed build on the CMS commit, never as a broken page.
+# src/cms-config.test.ts checks that every field here exists in the content files and the other way round.
+#
+# Languages: every content file holds a Hebrew and an English copy ({ "he": {...}, "en": {...} }).
+# Each field is marked either
+#   i18n: true       – written separately in each language (text), or
+#   i18n: duplicate  – entered once in Hebrew and copied to English (times, numbers, links, colours).
 
 backend:
   name: github
@@ -20,6 +25,11 @@ backend:
     uploadMedia: 'CMS: upload “{{path}}”'
     deleteMedia: 'CMS: delete “{{path}}”'
 
+i18n:
+  structure: single_file
+  locales: [he, en]
+  default_locale: he
+
 # Uploads that do not belong to a collection (none today).
 media_folder: public/uploads
 public_folder: /uploads
@@ -27,202 +37,246 @@ public_folder: /uploads
 collections:
   - name: settings
     label: הגדרות האתר
+    i18n: true
     files:
       - name: site
         label: פרטים וקישורים
         file: src/content/settings/site.json
+        i18n: true
         fields:
           - name: address
             label: כתובת
             widget: object
+            i18n: true
             fields:
-              - { name: street, label: רחוב ומספר, widget: string }
-              - { name: city, label: עיר, widget: string }
-          - { name: phone, label: טלפון המשרד, widget: string }
-          - { name: officeHours, label: שעות המשרד, widget: string }
+              - { name: street, label: רחוב ומספר, widget: string, i18n: true }
+              - { name: city, label: עיר, widget: string, i18n: true }
+          - { name: phone, label: טלפון המשרד, widget: string, i18n: duplicate }
+          - { name: officeHours, label: שעות המשרד, widget: string, i18n: true }
           - name: links
             label: קישורים
-            hint: השאירו ריק קישור שעדיין לא קיים. כפתור בלי קישור לא יוביל לשום מקום.
+            hint: 'השאירו ריק קישור שעדיין לא קיים. כפתור בלי קישור לא יוביל לשום מקום.'
             widget: object
+            i18n: duplicate
             fields:
-              - { name: donate, label: דף התרומות, widget: string, required: false }
               - {
-                  name: prayerSchedule,
-                  label: לוח זמני התפילות המלא,
+                  name: donate,
+                  label: דף התרומות,
                   widget: string,
                   required: false,
+                  i18n: duplicate,
                 }
-              - { name: whatsapp, label: קבוצת הוואטסאפ, widget: string, required: false }
-              - {
-                  name: midrashSchedule,
-                  label: הלוח המלא של מדרש אביב,
-                  widget: string,
-                  required: false,
-                }
+              - name: prayerSchedule
+                label: לוח זמני התפילות המלא
+                widget: string
+                required: false
+                i18n: duplicate
+              - name: whatsapp
+                label: קבוצת הוואטסאפ
+                widget: string
+                required: false
+                i18n: duplicate
+              - name: midrashSchedule
+                label: הלוח המלא של מדרש אביב
+                widget: string
+                required: false
+                i18n: duplicate
           - name: donation
             label: תרומות
             widget: object
+            i18n: duplicate
             fields:
               - name: amountParam
                 label: שם הפרמטר לסכום
-                hint: אם ספק התרומות יודע לקבל סכום בכתובת (למשל amount), כתבו כאן את שם הפרמטר. אחרת השאירו ריק וכפתורי הסכומים לא יוצגו.
+                hint: 'אם ספק התרומות יודע לקבל סכום בכתובת (למשל amount), כתבו כאן את שם הפרמטר. אחרת השאירו ריק וכפתורי הסכומים לא יוצגו.'
                 widget: string
                 required: false
+                i18n: duplicate
               - name: purposeParam
                 label: שם הפרמטר למטרת התרומה
-                hint: השם שספק התרומות מצפה לו עבור מטרת התרומה (חד־פעמית, חודשית, שיעור, קידוש). השאירו ריק כדי להסתיר את הבחירה.
+                hint: 'השם שספק התרומות מצפה לו עבור מטרת התרומה (חד־פעמית, חודשית, שיעור, קידוש). השאירו ריק כדי להסתיר את הבחירה.'
                 widget: string
                 required: false
-          - name: features
-            label: אפשרויות
-            widget: object
-            fields:
-              - { name: english, label: להציג מעבר לאנגלית, widget: boolean, default: false }
+                i18n: duplicate
 
   - name: home
     label: עמוד הבית
+    i18n: true
     files:
       - name: hero
         label: פתיחה
         file: src/content/home/hero.json
+        i18n: true
         fields:
           - name: titleLines
             label: כותרת (שורה בכל פריט)
             widget: list
-            field: { name: line, label: שורה, widget: string }
-          - { name: titleAccent, label: שורה אחרונה (בירוק), widget: string }
-          - { name: intro, label: פסקת פתיחה, widget: text }
-          - { name: primaryCta, label: כפתור לזמני התפילות, widget: string }
-          - { name: whatsappCta, label: קישור לוואטסאפ, widget: string }
+            i18n: true
+            field: { name: line, label: שורה, widget: string, i18n: true }
+          - { name: titleAccent, label: שורה אחרונה (בירוק), widget: string, i18n: true }
+          - { name: intro, label: פסקת פתיחה, widget: text, i18n: true }
+          - { name: primaryCta, label: כפתור לזמני התפילות, widget: string, i18n: true }
+          - { name: whatsappCta, label: קישור לוואטסאפ, widget: string, i18n: true }
 
       - name: about
         label: אודות
         file: src/content/home/about.json
+        i18n: true
         fields:
           - name: titleLines
             label: כותרת (שורה בכל פריט)
             widget: list
-            field: { name: line, label: שורה, widget: string }
+            i18n: true
+            field: { name: line, label: שורה, widget: string, i18n: true }
           - name: paragraphs
             label: פסקאות
             widget: list
-            field: { name: paragraph, label: פסקה, widget: text }
-          - { name: imageAlt, label: תיאור התמונה (לקוראי מסך), widget: string }
+            i18n: true
+            field: { name: paragraph, label: פסקה, widget: text, i18n: true }
+          - { name: imageAlt, label: תיאור התמונה (לקוראי מסך), widget: string, i18n: true }
           - name: verse
             label: פסוק
             widget: object
+            i18n: true
             fields:
-              - { name: text, label: הפסוק, widget: string }
-              - { name: source, label: מקור, widget: string }
+              - { name: text, label: הפסוק, widget: string, i18n: true }
+              - { name: source, label: מקור, widget: string, i18n: true }
 
       - name: prayerTimes
         label: זמני תפילות
         file: src/content/home/prayer-times.json
+        i18n: true
         fields:
-          - { name: title, label: כותרת, widget: string }
+          - { name: title, label: כותרת, widget: string, i18n: true }
           - name: candleLightingMinutes
             label: הדלקת נרות – דקות לפני השקיעה
-            hint: הזמנים של הדלקת נרות וצאת השבת מחושבים אוטומטית לתל אביב.
+            hint: 'הזמנים של הדלקת נרות וצאת השבת מחושבים אוטומטית לתל אביב.'
             widget: number
             value_type: int
             min: 10
             max: 60
+            i18n: duplicate
           - name: weekdays
             label: ימי חול
             widget: object
+            i18n: true
             fields:
-              - { name: title, label: כותרת, widget: string }
-              - { name: subtitle, label: כותרת משנה, widget: string }
+              - { name: title, label: כותרת, widget: string, i18n: true }
+              - { name: subtitle, label: כותרת משנה, widget: string, i18n: true }
               - &rows
                 name: rows
                 label: תפילות
+                hint: 'השעה מוזנת בעברית ומועתקת לאנגלית; את שם התפילה כותבים בכל שפה.'
                 widget: list
+                i18n: true
                 fields:
-                  - { name: label, label: תפילה, widget: string }
+                  - { name: label, label: תפילה, widget: string, i18n: true }
                   - name: time
                     label: שעה
                     widget: string
                     pattern: ['^([01]\d|2[0-3]):[0-5]\d$', 'שעה בפורמט 24 שעות, למשל 06:30']
+                    i18n: duplicate
           - name: shabbat
             label: שבת
             widget: object
+            i18n: true
             fields:
-              - { name: title, label: כותרת, widget: string }
+              - { name: title, label: כותרת, widget: string, i18n: true }
               - *rows
-          - { name: fullScheduleCta, label: קישור ללוח המלא, widget: string }
+          - { name: fullScheduleCta, label: קישור ללוח המלא, widget: string, i18n: true }
 
       - name: midrash
         label: מדרש אביב
         file: src/content/home/midrash.json
+        i18n: true
         fields:
-          - { name: eyebrow, label: כותרת עליונה, widget: string }
-          - { name: intro, label: פסקת פתיחה, widget: text }
-          - { name: detail, label: פסקה נוספת, widget: text }
+          - { name: eyebrow, label: כותרת עליונה, widget: string, i18n: true }
+          - { name: intro, label: פסקת פתיחה, widget: text, i18n: true }
+          - { name: detail, label: פסקה נוספת, widget: text, i18n: true }
           - name: schedule
             label: לוח שבועי
             widget: object
+            i18n: true
             fields:
-              - { name: title, label: כותרת, widget: string }
-              - { name: subtitle, label: כותרת משנה, widget: string }
+              - { name: title, label: כותרת, widget: string, i18n: true }
+              - { name: subtitle, label: כותרת משנה, widget: string, i18n: true }
               - name: rows
                 label: שיעורים
+                hint: 'השעה מוזנת בעברית ומועתקת לאנגלית; את שם השיעור כותבים בכל שפה.'
                 widget: list
+                i18n: true
                 fields:
-                  - { name: label, label: יום ושיעור, widget: string }
+                  - { name: label, label: יום ושיעור, widget: string, i18n: true }
                   - name: time
                     label: שעה
                     widget: string
                     pattern: ['^([01]\d|2[0-3]):[0-5]\d$', 'שעה בפורמט 24 שעות, למשל 20:30']
-          - { name: fullScheduleCta, label: כפתור ללוח המלא, widget: string }
+                    i18n: duplicate
+          - { name: fullScheduleCta, label: כפתור ללוח המלא, widget: string, i18n: true }
 
       - name: team
         label: הצוות – כותרות
         file: src/content/home/team.json
+        i18n: true
         fields:
-          - { name: eyebrow, label: כותרת עליונה, widget: string }
-          - { name: title, label: כותרת, widget: string }
-          - { name: hint, label: הנחיה מעל העיגולים, widget: string }
-          - { name: contactCta, label: כפתור יצירת קשר, widget: string }
+          - { name: eyebrow, label: כותרת עליונה, widget: string, i18n: true }
+          - { name: title, label: כותרת, widget: string, i18n: true }
+          - { name: hint, label: הנחיה מעל העיגולים, widget: string, i18n: true }
+          - { name: contactCta, label: כפתור יצירת קשר, widget: string, i18n: true }
 
       - name: donate
         label: תרומה
         file: src/content/home/donate.json
+        i18n: true
         fields:
           - name: titleLines
             label: כותרת (שורה בכל פריט)
             widget: list
-            field: { name: line, label: שורה, widget: string }
-          - { name: text, label: פסקה, widget: text }
-          - { name: cardTitle, label: כותרת הכרטיס, widget: string }
-          - { name: purposeLegend, label: שאלת מטרת התרומה, widget: string }
+            i18n: true
+            field: { name: line, label: שורה, widget: string, i18n: true }
+          - { name: text, label: פסקה, widget: text, i18n: true }
+          - { name: cardTitle, label: כותרת הכרטיס, widget: string, i18n: true }
+          - { name: purposeLegend, label: שאלת מטרת התרומה, widget: string, i18n: true }
           - name: purposes
             label: מטרות תרומה
             widget: list
+            i18n: true
             fields:
-              - { name: label, label: תווית, widget: string }
-              - { name: value, label: ערך שנשלח לספק, widget: string }
-          - { name: cardNote, label: הערה מתחת לכפתור, widget: string }
+              - { name: label, label: תווית, widget: string, i18n: true }
+              - { name: value, label: ערך שנשלח לספק, widget: string, i18n: duplicate }
+          - { name: cardNote, label: הערה מתחת לכפתור, widget: string, i18n: true }
           - name: amounts
             label: סכומים מוצעים (בשקלים)
             widget: list
-            field: { name: amount, label: סכום, widget: number, value_type: int, min: 1 }
-          - { name: otherAmountLabel, label: תווית "סכום אחר", widget: string }
-          - { name: cta, label: כפתור התרומה, widget: string }
+            i18n: duplicate
+            field:
+              {
+                name: amount,
+                label: סכום,
+                widget: number,
+                value_type: int,
+                min: 1,
+                i18n: duplicate,
+              }
+          - { name: otherAmountLabel, label: 'תווית "סכום אחר"', widget: string, i18n: true }
+          - { name: cta, label: כפתור התרומה, widget: string, i18n: true }
 
       - name: join
         label: וואטסאפ
         file: src/content/home/join.json
+        i18n: true
         fields:
-          - { name: title, label: כותרת, widget: string }
-          - { name: text, label: טקסט, widget: string }
-          - { name: cta, label: כפתור, widget: string }
+          - { name: title, label: כותרת, widget: string, i18n: true }
+          - { name: text, label: טקסט, widget: string, i18n: true }
+          - { name: cta, label: כפתור, widget: string, i18n: true }
 
   - name: team
     label: הצוות
     label_singular: איש צוות
     folder: src/content/team
-    extension: md
-    format: frontmatter
+    extension: json
+    format: json
+    i18n: true
     create: true
     slug: 'member-{{uuid_short}}'
     identifier_field: name
@@ -232,32 +286,34 @@ collections:
     media_folder: /src/assets/team
     public_folder: ../../assets/team
     fields:
-      - { name: name, label: שם, widget: string }
-      - { name: role, label: תפקיד, widget: string }
+      - { name: name, label: שם, widget: string, i18n: true }
+      - { name: role, label: תפקיד, widget: string, i18n: true }
+      - name: bio
+        label: ביוגרפיה
+        hint: 'שורה ריקה מפרידה בין פסקאות.'
+        widget: text
+        i18n: true
       - name: order
         label: מיקום ברשימה
         widget: number
         value_type: int
-        hint: המספר הקטן מופיע ראשון
+        hint: 'המספר הקטן מופיע ראשון'
+        i18n: duplicate
       - name: color
         label: צבע העיגול (כשאין תמונה)
         widget: select
+        i18n: duplicate
         options:
           - { label: כחול, value: cobalt }
           - { label: ירוק, value: forest }
           - { label: כתום, value: orange }
           - { label: טורקיז, value: teal }
           - { label: אדום, value: red }
-      - name: initial
-        label: אות בעיגול
-        widget: string
-        required: false
-        hint: 'ברירת המחדל היא האות הראשונה בשם, אחרי "הרב"'
-      - { name: photo, label: תמונה, widget: image, required: false }
+      - { name: photo, label: תמונה, widget: image, required: false, i18n: duplicate }
       - name: contact
         label: קישור ליצירת קשר
         widget: string
         required: false
         hint: 'mailto:name@example.org.il, tel:+972501234567 או https://…'
         pattern: ['^(mailto:|tel:|https://)', 'הקישור צריך להתחיל ב-mailto:, tel: או https://']
-      - { name: body, label: ביוגרפיה, widget: markdown }
+        i18n: duplicate

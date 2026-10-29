@@ -4,15 +4,18 @@ import Button from '@/components/ui/Button.astro';
 import Logo from '@/components/ui/Logo.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { type Lang, useTranslations } from '@/i18n/ui';
-import { donate } from '@/lib/home-content';
+import { sectionContent } from '@/lib/home-content';
 import { sectionIds } from '@/lib/navigation';
-import { linkOr, site } from '@/lib/settings';
+import { linkOr, siteSettings } from '@/lib/settings';
 
 interface Props {
   lang: Lang;
 }
 
-const t = useTranslations(Astro.props.lang);
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const donate = sectionContent('donate', lang);
+const site = siteSettings(lang);
 
 // The form sends the visitor to the donation provider. The purpose and amount choices are sent as
 // URL parameters, so each group is shown only when its parameter name is set in the settings
@@ -20,7 +23,7 @@ const t = useTranslations(Astro.props.lang);
 const { amountParam, purposeParam } = site.donation;
 const showPurposes = purposeParam !== '' && donate.purposes.length > 0;
 const showAmounts = amountParam !== '' && donate.amounts.length > 0;
-const formatShekels = new Intl.NumberFormat('he-IL', {
+const formatShekels = new Intl.NumberFormat(lang === 'he' ? 'he-IL' : 'en-IL', {
   style: 'currency',
   currency: 'ILS',
   maximumFractionDigits: 0,

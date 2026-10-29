@@ -1,12 +1,26 @@
 {
-  "titleLines": ["קהילה שמתחדשת,", "מסורת שנמשכת"],
-  "paragraphs": [
-    "איחוד שיבת ציון הוא בית כנסת וקהילה אורתודוקסית־מודרנית בלב תל אביב. מתפללים אצלנו משפחות צעירות, סטודנטים, ותיקי השכונה ועולים חדשים – אנשים שהגיעו לעיר מרקעים שונים ומכל קצוות הקשת הדתית, ומצאו כאן בית.",
-    "הקהילה נוסדה בשנת [שנת ייסוד] בידי עולים ממרכז אירופה, ומאז היא משלבת תפילה מוקפדת, לימוד תורה וחיי קהילה חמים. בהנהגת הרב עזי הורביץ מתקיימים כאן תפילות ושיעורים, סעודות קהילתיות בחגים ושוק ארבעת המינים לקראת סוכות."
-  ],
-  "imageAlt": "בניין בית הכנסת איחוד שיבת ציון ברחוב בן יהודה",
-  "verse": {
-    "text": "בשוב ה׳ את שיבת ציון היינו כחולמים",
-    "source": "תהילים קכ״ו, א׳"
+  "he": {
+    "titleLines": ["קהילה שמתחדשת,", "מסורת שנמשכת"],
+    "paragraphs": [
+      "איחוד שיבת ציון הוא בית כנסת וקהילה אורתודוקסית־מודרנית בלב תל אביב. מתפללים אצלנו משפחות צעירות, סטודנטים, ותיקי השכונה ועולים חדשים – אנשים שהגיעו לעיר מרקעים שונים ומכל קצוות הקשת הדתית, ומצאו כאן בית.",
+      "הקהילה נוסדה בשנת [שנת ייסוד] בידי עולים ממרכז אירופה, ומאז היא משלבת תפילה מוקפדת, לימוד תורה וחיי קהילה חמים. בהנהגת הרב עזי הורביץ מתקיימים כאן תפילות ושיעורים, סעודות קהילתיות בחגים ושוק ארבעת המינים לקראת סוכות."
+    ],
+    "imageAlt": "בניין בית הכנסת איחוד שיבת ציון ברחוב בן יהודה",
+    "verse": {
+      "text": "בשוב ה׳ את שיבת ציון היינו כחולמים",
+      "source": "תהילים קכ״ו, א׳"
+    }
+  },
+  "en": {
+    "titleLines": ["A community that renews itself,", "a tradition that carries on"],
+    "paragraphs": [
+      "Ichud Shivat Zion is a Modern Orthodox synagogue and community in the heart of Tel Aviv. Our members are young families, students, longtime residents of the neighbourhood and new olim – people who came to the city from different backgrounds and from across the religious spectrum, and found a home here.",
+      "The community was founded in [founding year] by immigrants from Central Europe, and ever since it has combined careful prayer, Torah study and a warm community life. Led by Rabbi Azi Horvitch, we hold prayers and classes, community meals on the festivals, and a Four Species market before Sukkot."
+    ],
+    "imageAlt": "The Ichud Shivat Zion synagogue building on Ben Yehuda Street",
+    "verse": {
+      "text": "When the Lord turned again the captivity of Zion, we were like them that dream.",
+      "source": "Psalm 126:1"
+    }
   }
 }

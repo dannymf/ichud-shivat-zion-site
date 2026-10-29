@@ -1,8 +1,17 @@
 ---
 import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
-import { join } from '@/lib/home-content';
-import { linkOr, site } from '@/lib/settings';
+import type { Lang } from '@/i18n/ui';
+import { sectionContent } from '@/lib/home-content';
+import { linkOr, siteSettings } from '@/lib/settings';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const join = sectionContent('join', lang);
+const site = siteSettings(lang);
 ---
 
 <section class="join" aria-labelledby="join-title">

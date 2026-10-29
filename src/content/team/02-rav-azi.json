@@ -1,0 +1,16 @@
+{
+  "he": {
+    "name": "הרב עזי",
+    "role": "רב הקהילה",
+    "bio": "הרב עזי הוא רב הקהילה. לפני שהגיע לתל אביב שימש יחד עם רעייתו כרכזי תוכנית JLIC בפרינסטון. הוסמך לרבנות במסגרת אור תורה סטון, בעל תואר שני בפילוסופיה יהודית מאוניברסיטת בר־אילן, ולמד מוזיקה במכללת מזמור.",
+    "order": 2,
+    "color": "forest"
+  },
+  "en": {
+    "name": "Rabbi Azi",
+    "role": "Rabbi of the community",
+    "bio": "Rabbi Azi is the rabbi of the community. Before coming to Tel Aviv, he and his wife served as JLIC co-directors at Princeton. He received rabbinic ordination from Ohr Torah Stone, holds an M.A. in Jewish Philosophy from Bar-Ilan University, and studied music at Mizmor Music College.",
+    "order": 2,
+    "color": "forest"
+  }
+}

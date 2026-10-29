@@ -1,7 +1,16 @@
 {
-  "titleLines": ["בית של תפילה,", "תורה וקהילה"],
-  "titleAccent": "בלב תל אביב",
-  "intro": "איחוד שיבת ציון הוא בית כנסת וקהילה תוססת בלב תל אביב, המפגישה משפחות צעירות, ותיקי השכונה ועולים חדשים סביב תפילה, לימוד, מסורת וחיי קהילה.",
-  "primaryCta": "לזמני התפילות",
-  "whatsappCta": "הצטרפות לקבוצת הוואטסאפ"
+  "he": {
+    "titleLines": ["בית של תפילה,", "תורה וקהילה"],
+    "titleAccent": "בלב תל אביב",
+    "intro": "איחוד שיבת ציון הוא בית כנסת וקהילה תוססת בלב תל אביב, המפגישה משפחות צעירות, ותיקי השכונה ועולים חדשים סביב תפילה, לימוד, מסורת וחיי קהילה.",
+    "primaryCta": "לזמני התפילות",
+    "whatsappCta": "הצטרפות לקבוצת הוואטסאפ"
+  },
+  "en": {
+    "titleLines": ["A home for prayer,", "Torah and community"],
+    "titleAccent": "in the heart of Tel Aviv",
+    "intro": "Ichud Shivat Zion is a synagogue and a vibrant community in the heart of Tel Aviv, bringing together young families, longtime neighbours and new olim around prayer, learning, tradition and community life.",
+    "primaryCta": "Prayer times",
+    "whatsappCta": "Join our WhatsApp group"
+  }
 }

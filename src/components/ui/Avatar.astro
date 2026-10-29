@@ -9,15 +9,15 @@ import { Image } from 'astro:assets';
  */
 interface Props {
   name: string;
-  initial?: string;
   color: 'cobalt' | 'forest' | 'orange' | 'teal' | 'red';
   photo?: ImageMetadata;
   /** Diameter in px */
   size?: number;
 }
 
-const { name, initial, color, photo, size = 146 } = Astro.props;
-const letter = initial ?? name.replace(/^הרב\s+/, '').charAt(0);
+const { name, color, photo, size = 146 } = Astro.props;
+// The first letter of the name, skipping a title such as "הרב" or "Rabbi".
+const letter = name.replace(/^(הרב|Rabbi|Rav)\s+/, '').charAt(0);
 ---
 
 {photo ? (

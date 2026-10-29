@@ -6,15 +6,18 @@ import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
 import ScheduleCard from '@/components/ui/ScheduleCard.astro';
 import { type Lang, useTranslations } from '@/i18n/ui';
-import { midrash } from '@/lib/home-content';
+import { sectionContent } from '@/lib/home-content';
 import { sectionIds } from '@/lib/navigation';
-import { linkOr, site } from '@/lib/settings';
+import { linkOr, siteSettings } from '@/lib/settings';
 
 interface Props {
   lang: Lang;
 }
 
-const t = useTranslations(Astro.props.lang);
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const midrash = sectionContent('midrash', lang);
+const site = siteSettings(lang);
 ---
 
 <Section id={sectionIds.midrash} tone="aviv" headingId="midrash-title">

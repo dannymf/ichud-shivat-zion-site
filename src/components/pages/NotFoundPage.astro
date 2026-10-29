@@ -1,0 +1,46 @@
+---
+import Section from '@/components/layout/Section.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { type Lang, useTranslations } from '@/i18n/ui';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { homePath } from '@/lib/navigation';
+
+/** The 404 page. Cloudflare serves the nearest 404.html, so /en/… misses get the English one. */
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<BaseLayout lang={lang} title={t('notFound.title')} noindex>
+  <Section id="not-found" headingId="not-found-title">
+    <div class="not-found">
+      <SectionHeading
+        id="not-found-title"
+        level="h1"
+        eyebrow="404"
+        title={t('notFound.title')}
+        align="center"
+      />
+      <p>{t('notFound.text')}</p>
+      <Button href={homePath(lang)} size="lg">
+        {t('notFound.home')}
+        <Icon name="forward" />
+      </Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+    text-align: center;
+  }
+</style>

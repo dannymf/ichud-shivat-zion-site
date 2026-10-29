@@ -8,8 +8,12 @@ export default defineConfig({
   // TODO: set to the production domain once it is chosen (used for canonical URLs and the sitemap).
   // site: 'https://example.org.il',
 
+  // Write pages as named in src/pages, so en/404.astro becomes en/404.html: Cloudflare serves the
+  // nearest 404.html, and the default format would write en/404/index.html instead.
+  build: { format: 'preserve' },
+
   i18n: {
-    // Hebrew is the default and lives at `/`. English will live at `/en/` once it has content.
+    // Hebrew is the default and lives at `/`; English lives at `/en/`.
     defaultLocale: 'he',
     locales: ['he', 'en'],
     routing: { prefixDefaultLocale: false },

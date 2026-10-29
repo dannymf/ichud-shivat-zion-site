@@ -10,6 +10,9 @@ export const defaultLang: Lang = 'he';
 
 export const textDirection: Record<Lang, 'rtl' | 'ltr'> = { he: 'rtl', en: 'ltr' };
 
+/** Labels for the language switch, each written in its own language. */
+export const languageShort: Record<Lang, string> = { he: 'עב', en: 'EN' };
+
 const he = {
   'site.name': 'איחוד שיבת ציון',
   'site.tagline': 'בית כנסת וקהילה · תל אביב',
@@ -41,11 +44,39 @@ const he = {
 
 export type UiKey = keyof typeof he;
 
-/** English strings are filled in when the English site launches; missing keys fall back to Hebrew. */
-const en: Partial<Record<UiKey, string>> = {};
+/** Every key is required, so a missing English string is a type error rather than Hebrew on the English site. */
+const en: Record<UiKey, string> = {
+  'site.name': 'Ichud Shivat Zion',
+  'site.tagline': 'Synagogue & community · Tel Aviv',
+  'site.description':
+    'Ichud Shivat Zion – a synagogue and community at 86 Ben Yehuda Street, Tel Aviv.',
+  'a11y.skipToContent': 'Skip to content',
+  'nav.primary': 'Main menu',
+  'nav.footer': 'Footer menu',
+  'nav.openMenu': 'Open the menu',
+  'nav.about': 'About',
+  'nav.prayerTimes': 'Prayer times',
+  'nav.midrash': 'Midrash Aviv',
+  'nav.team': 'Team',
+  'nav.donate': 'Donate',
+  'cta.donate': 'Donate',
+  'hero.arkAlt': 'The sanctuary: the ark, the bimah and the chandelier',
+  'hero.windowAlt': 'A stained-glass window in the synagogue',
+  'prayerTimes.today': 'Today',
+  'prayerTimes.candleLighting': 'Candle lighting · Friday',
+  'prayerTimes.havdalah': 'Shabbat ends',
+  'prayerTimes.weekOf': 'Week of',
+  'donate.amountLegend': 'Amount',
+  'notFound.title': 'Page not found',
+  'notFound.text': 'The link may have changed, or the page may have been removed.',
+  'notFound.home': 'Back to the home page',
+  'footer.office': 'Office',
+  'footer.rights': 'Ichud Shivat Zion Synagogue',
+  'lang.label': 'Language',
+};
 
-const ui: Record<Lang, Partial<Record<UiKey, string>>> = { he, en };
+const ui: Record<Lang, Record<UiKey, string>> = { he, en };
 
 export function useTranslations(lang: Lang) {
-  return (key: UiKey): string => ui[lang][key] ?? he[key];
+  return (key: UiKey): string => ui[lang][key];
 }

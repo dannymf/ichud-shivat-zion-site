@@ -1,5 +1,12 @@
 {
-  "title": "הצטרפו לקבוצת הוואטסאפ של הקהילה",
-  "text": "עדכונים על זמני תפילות, שיעורים ואירועי הקהילה – ישר לטלפון.",
-  "cta": "הצטרפות לקבוצה"
+  "he": {
+    "title": "הצטרפו לקבוצת הוואטסאפ של הקהילה",
+    "text": "עדכונים על זמני תפילות, שיעורים ואירועי הקהילה – ישר לטלפון.",
+    "cta": "הצטרפות לקבוצה"
+  },
+  "en": {
+    "title": "Join the community WhatsApp group",
+    "text": "Updates on prayer times, classes and community events – straight to your phone.",
+    "cta": "Join the group"
+  }
 }

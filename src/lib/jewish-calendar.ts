@@ -13,24 +13,31 @@ import {
   Location,
   ParshaEvent,
 } from '@hebcal/core';
+import type { Lang } from '@/i18n/ui';
 
 const TIME_ZONE = 'Asia/Jerusalem';
-const HEBREW = 'he-x-NoNikud';
+
+/** Hebcal's locale and the Intl locale for each site language. */
+const LOCALES: Record<Lang, { hebcal: string; intl: string }> = {
+  he: { hebcal: 'he-x-NoNikud', intl: 'he-IL' },
+  en: { hebcal: 'en', intl: 'en-IL' },
+};
 
 export interface CalendarOptions {
   /** Minutes before sunset for candle lighting. */
   candleLightingMinutes: number;
+  lang: Lang;
 }
 
 export interface WeekInfo {
   today: {
-    /** e.g. "יום ראשון" */
+    /** e.g. "יום ראשון" / "Sunday" */
     weekday: string;
-    /** e.g. "כ״ג תשרי תשפ״ז" */
+    /** e.g. "כ״ג תשרי תשפ״ז" / "23rd of Tishrei, 5787" */
     hebrewDate: string;
   };
   shabbat: {
-    /** The weekly portion ("פרשת בראשית"), or the festival's name when a festival replaces it. */
+    /** The weekly portion ("פרשת בראשית" / "Parashat Bereshit"), or the festival replacing it. */
     title: string | undefined;
     /** Friday candle lighting, "HH:MM" */
     candleLighting: string | undefined;
@@ -69,6 +76,7 @@ function formatTime(moment: Date): string {
 }
 
 export function getWeekInfo(now: Date, options: CalendarOptions): WeekInfo {
+  const locale = LOCALES[options.lang];
   const today = israelCalendarDate(now);
   const saturday = upcomingShabbat(today);
   const friday = new Date(saturday.getFullYear(), saturday.getMonth(), saturday.getDate() - 1);
@@ -99,13 +107,17 @@ export function getWeekInfo(now: Date, options: CalendarOptions): WeekInfo {
 
   return {
     today: {
-      weekday: new Intl.DateTimeFormat('he-IL', { timeZone: TIME_ZONE, weekday: 'long' }).format(
-        now,
-      ),
-      hebrewDate: new HDate(today).renderGematriya(true),
+      weekday: new Intl.DateTimeFormat(locale.intl, {
+        timeZone: TIME_ZONE,
+        weekday: 'long',
+      }).format(now),
+      hebrewDate:
+        options.lang === 'he'
+          ? new HDate(today).renderGematriya(true)
+          : new HDate(today).render('en', true),
     },
     shabbat: {
-      title: (parasha ?? festival)?.render(HEBREW),
+      title: (parasha ?? festival)?.render(locale.hebcal),
       candleLighting: candleLighting && formatTime(candleLighting.eventTime),
       havdalah: havdalah && formatTime(havdalah.eventTime),
     },

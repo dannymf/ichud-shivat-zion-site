@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getWeekInfo, israelCalendarDate, upcomingShabbat } from './jewish-calendar';
 
-const options = { candleLightingMinutes: 18 };
+const options = { candleLightingMinutes: 18, lang: 'he' } as const;
 
 describe('israelCalendarDate', () => {
   it('uses the date in Israel, not the build machine’s time zone', () => {
@@ -39,7 +39,17 @@ describe('getWeekInfo', () => {
   });
 
   it('respects the candle-lighting setting', () => {
-    const info = getWeekInfo(new Date('2026-10-04T09:00:00Z'), { candleLightingMinutes: 30 });
+    const info = getWeekInfo(new Date('2026-10-04T09:00:00Z'), {
+      ...options,
+      candleLightingMinutes: 30,
+    });
     expect(info.shabbat.candleLighting).toBe('17:45');
+  });
+
+  it('speaks English on the English site', () => {
+    const info = getWeekInfo(new Date('2026-10-04T09:00:00Z'), { ...options, lang: 'en' });
+    expect(info.today).toEqual({ weekday: 'Sunday', hebrewDate: '23rd of Tishrei, 5787' });
+    expect(info.shabbat.title).toBe('Parashat Bereshit');
+    expect(info.shabbat.candleLighting).toBe('17:55');
   });
 });

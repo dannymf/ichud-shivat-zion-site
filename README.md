@@ -30,11 +30,13 @@ npm run dev       # http://localhost:4321
 
 ```
 src/
+  pages/                       index.astro and 404.astro (Hebrew), en/ (English); each renders a page component
   layouts/BaseLayout.astro     <html> shell: language and direction, meta, fonts, header and footer
   components/
     layout/                    SiteHeader, SiteFooter, JoinBand, Section (one full-screen panel)
     ui/                        Building blocks: Button, SectionHeading, ScheduleCard, Plaque, Avatar…
-    sections/                  One component per home-page section, in page order in pages/index.astro
+    pages/                     HomePage and NotFoundPage, shared by both languages
+    sections/                  One component per home-page section, in page order in HomePage.astro
   content/                     Everything staff can edit (see docs/content.md)
   content.config.ts            The `team` content collection
   lib/                         Plain TypeScript: content loading and validation, the Jewish calendar
@@ -51,10 +53,13 @@ docs/                          content.md (what lives where), deployment.md (hos
 - **Design tokens.** Colours, fonts, sizes and spacing come from `src/styles/tokens.css`. Components
   use the variables rather than literal values.
 - **Right-to-left first.** Use logical CSS properties (`margin-inline`, `inset-inline-start`,
-  `padding-block`) so the layout also works left-to-right for the future English pages.
+  `padding-block`) so the same layout works left-to-right on the English pages.
 - **Content vs. interface text.** Anything staff should be able to change lives in `src/content/`
   and is validated with a Zod schema at build time. Fixed interface text (menu labels, button text,
   accessible names) lives in `src/i18n/ui.ts`.
+- **Two languages.** Hebrew at `/`, English at `/en/` (Astro i18n routing). Components take a `lang`
+  prop and read content with `sectionContent(section, lang)` and `siteSettings(lang)`; content files
+  hold `{ "he": …, "en": … }`. Build internal links with `sectionHref(id, lang)`.
 - **Sections.** Each home-page section is one component in `components/sections/`, wrapped in
   `<Section>`, with its id taken from `src/lib/navigation.ts`, which also builds the header and footer
   menus.
@@ -67,8 +72,8 @@ docs/                          content.md (what lives where), deployment.md (hos
 
 | Font             | Used for                      | Source                                    |
 | ---------------- | ----------------------------- | ----------------------------------------- |
-| Kehila Serif     | Headings and the wordmark     | `src/assets/fonts` (Hebrew letters, bold) |
-| Frank Ruhl Libre | Body text, digits and Latin   | `@fontsource-variable/frank-ruhl-libre`   |
+| Kehila Serif     | Hebrew headings, the wordmark | `src/assets/fonts` (Hebrew letters, bold) |
+| Frank Ruhl Libre | Body, digits, English titles  | `@fontsource-variable/frank-ruhl-libre`   |
 | Aviv Display     | The Midrash Aviv section only | `src/assets/fonts`                        |
 
 They are registered with Astro's Fonts API in `astro.config.mjs`.
@@ -85,7 +90,8 @@ and [docs/deployment.md](docs/deployment.md).
 The code is complete; these are content and accounts that only the community can supply.
 
 - [ ] Real prayer times, Midrash Aviv shiurim, team bios and photos (placeholders are marked with
-      square brackets in `src/content/`)
+      square brackets in `src/content/`), in Hebrew and English
+- [ ] A read-through of the English text by a native speaker
 - [ ] The founding year in `src/content/home/about.json`
 - [ ] Links in `src/content/settings/site.json`: donation page, full prayer schedule,
       WhatsApp group, Midrash Aviv schedule (the build lists any that are still empty)

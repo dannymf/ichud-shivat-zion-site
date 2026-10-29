@@ -1,6 +1,14 @@
 {
-  "eyebrow": "אנשי קשר",
-  "title": "הצוות שלנו",
-  "hint": "לחצו על אחד מאנשי הצוות כדי להכיר אותו",
-  "contactCta": "יצירת קשר"
+  "he": {
+    "eyebrow": "אנשי קשר",
+    "title": "הצוות שלנו",
+    "hint": "לחצו על אחד מאנשי הצוות כדי להכיר אותו",
+    "contactCta": "יצירת קשר"
+  },
+  "en": {
+    "eyebrow": "Contact",
+    "title": "Our team",
+    "hint": "Choose someone to read about them",
+    "contactCta": "Get in touch"
+  }
 }

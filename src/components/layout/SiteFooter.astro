@@ -3,7 +3,7 @@ import JoinBand from '@/components/layout/JoinBand.astro';
 import Logo from '@/components/ui/Logo.astro';
 import { type Lang, useTranslations } from '@/i18n/ui';
 import { footerNav, sectionHref } from '@/lib/navigation';
-import { site, telHref } from '@/lib/settings';
+import { siteSettings, telHref } from '@/lib/settings';
 
 interface Props {
   lang: Lang;
@@ -11,11 +11,12 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const site = siteSettings(lang);
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <JoinBand />
+  <JoinBand lang={lang} />
   <div class="site-footer__ribbon" aria-hidden="true"></div>
   <div class="site-footer__inner">
     <div class="site-footer__columns">
@@ -31,7 +32,7 @@ const year = new Date().getFullYear();
         <ul class="site-footer__nav">
           {footerNav.map((item) => (
             <li>
-              <a href={sectionHref(item.id)}>{t(item.label)}</a>
+              <a href={sectionHref(item.id, lang)}>{t(item.label)}</a>
             </li>
           ))}
         </ul>

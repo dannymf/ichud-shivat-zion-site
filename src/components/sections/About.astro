@@ -5,14 +5,16 @@ import Section from '@/components/layout/Section.astro';
 import Diamond from '@/components/ui/Diamond.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { type Lang, useTranslations } from '@/i18n/ui';
-import { about } from '@/lib/home-content';
+import { sectionContent } from '@/lib/home-content';
 import { sectionIds } from '@/lib/navigation';
 
 interface Props {
   lang: Lang;
 }
 
-const t = useTranslations(Astro.props.lang);
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const about = sectionContent('about', lang);
 ---
 
 <Section id={sectionIds.about} tone="sand" headingId="about-title">

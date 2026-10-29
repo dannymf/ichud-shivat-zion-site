@@ -1,0 +1,16 @@
+{
+  "he": {
+    "name": "הרב גבריאל",
+    "role": "ראש בית המדרש",
+    "bio": "[כמה שורות על הרב גבריאל: רקע, תחומי לימוד והשיעורים שהוא מעביר בבית המדרש.]",
+    "order": 4,
+    "color": "teal"
+  },
+  "en": {
+    "name": "Rabbi Gavriel",
+    "role": "Head of the Beit Midrash",
+    "bio": "[A few lines about Rabbi Gavriel: his background, what he teaches and his shiurim at the beit midrash.]",
+    "order": 4,
+    "color": "teal"
+  }
+}
