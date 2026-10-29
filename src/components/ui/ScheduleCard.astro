@@ -1,0 +1,123 @@
+---
+import type { ScheduleRow } from '@/lib/schedule';
+import Plaque from './Plaque.astro';
+
+/**
+ * A timetable card: a plaque title, an optional subtitle, and rows of
+ * "label ……… time" joined by a dotted leader, as on the community's posters.
+ */
+interface Props {
+  title: string;
+  subtitle?: string;
+  rows: ScheduleRow[];
+  variant?: 'default' | 'aviv';
+}
+
+const { title, subtitle, rows, variant = 'default' } = Astro.props;
+---
+
+<article class:list={['schedule', `schedule--${variant}`]}>
+  <header class="schedule__head">
+    <Plaque variant={variant}>{title}</Plaque>
+    {subtitle && <p class="schedule__subtitle">{subtitle}</p>}
+  </header>
+  <dl class="schedule__rows">
+    {rows.map((row) => (
+      <div class="schedule__row">
+        <dt>{row.label}</dt>
+        <dd>
+          <time datetime={row.time} dir="ltr">
+            {row.time}
+          </time>
+        </dd>
+      </div>
+    ))}
+  </dl>
+</article>
+
+<style>
+  .schedule {
+    --accent: var(--color-gold);
+    --time-color: var(--color-gold-text);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: 2.5rem 2.75rem 2.25rem;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    border-radius: var(--radius-md);
+    outline: 1px solid var(--accent);
+    outline-offset: -0.5625rem;
+  }
+
+  .schedule--aviv {
+    --accent: var(--color-aviv);
+    --time-color: var(--color-aviv);
+    box-shadow: 0 1.5rem 3rem rgb(10 30 70 / 0.28);
+  }
+
+  .schedule__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .schedule__subtitle {
+    font-size: 1.0625rem;
+    color: var(--color-muted);
+  }
+
+  .schedule__row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding-block: 0.8rem;
+  }
+
+  .schedule__row dt {
+    font-size: 1.3125rem;
+    font-weight: 500;
+  }
+
+  /* The dotted leader between label and time */
+  .schedule__row::after {
+    content: '';
+    order: 1;
+    flex: 1;
+    min-inline-size: 0.75rem;
+    border-block-end: 2px dotted color-mix(in srgb, var(--accent) 80%, transparent);
+    transform: translateY(-0.3rem);
+  }
+
+  .schedule__row dd {
+    order: 2;
+    margin: 0;
+    font-size: 1.5625rem;
+    font-weight: 700;
+    color: var(--time-color);
+  }
+
+  .schedule--aviv .schedule__row dd {
+    font-family: var(--font-aviv-display);
+    font-weight: 400;
+    font-size: 1.875rem;
+    line-height: 1;
+  }
+
+  @media (max-width: 30rem) {
+    .schedule {
+      padding: 1.875rem 1.375rem 1.375rem;
+      outline-offset: -0.4375rem;
+    }
+
+    .schedule__row dt {
+      font-size: 1.125rem;
+    }
+
+    .schedule__row dd {
+      font-size: 1.375rem;
+    }
+  }
+</style>
