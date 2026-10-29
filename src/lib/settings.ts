@@ -14,6 +14,7 @@ const siteSchema = z.object({
   links: z.object({
     donate: optionalUrl,
     membership: optionalUrl,
+    prayerSchedule: optionalUrl,
     whatsapp: optionalUrl,
     midrashSchedule: optionalUrl,
   }),

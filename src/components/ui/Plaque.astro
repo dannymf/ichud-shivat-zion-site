@@ -1,0 +1,46 @@
+---
+/**
+ * A heading set on a navy plaque with pointed ends, as on the community's posters.
+ * `aviv` uses the Midrash Aviv typeface and colours.
+ */
+interface Props {
+  level?: 'h3' | 'h4';
+  variant?: 'default' | 'aviv';
+}
+
+const { level = 'h3', variant = 'default' } = Astro.props;
+const Heading = level;
+---
+
+<Heading class:list={['plaque', `plaque--${variant}`]}>
+  <slot />
+</Heading>
+
+<style>
+  .plaque {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 3.125rem;
+    padding: var(--space-1) 2.125rem;
+    background: var(--color-navy);
+    color: var(--color-ivory);
+    font-size: 1.625rem;
+    line-height: 1.2;
+    clip-path: polygon(
+      var(--plaque-point) 0,
+      calc(100% - var(--plaque-point)) 0,
+      100% 50%,
+      calc(100% - var(--plaque-point)) 100%,
+      var(--plaque-point) 100%,
+      0 50%
+    );
+  }
+
+  .plaque--aviv {
+    background: var(--color-aviv-ink);
+    font-family: var(--font-aviv-display);
+    font-weight: 400;
+    font-size: 1.75rem;
+    letter-spacing: 0.02em;
+  }
+</style>

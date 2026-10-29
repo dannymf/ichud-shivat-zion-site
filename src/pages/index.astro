@@ -3,6 +3,7 @@ import Section from '@/components/layout/Section.astro';
 import About from '@/components/sections/About.astro';
 import Donate from '@/components/sections/Donate.astro';
 import Hero from '@/components/sections/Hero.astro';
+import PrayerTimes from '@/components/sections/PrayerTimes.astro';
 import { useTranslations } from '@/i18n/ui';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { sectionIds } from '@/lib/navigation';
@@ -10,15 +11,13 @@ import { sectionIds } from '@/lib/navigation';
 const lang = 'he';
 const t = useTranslations(lang);
 
-// PrayerTimes, MidrashAviv and Team replace the remaining shells in the following pull requests.
+// MidrashAviv and Team replace the remaining shells in the following pull requests.
 ---
 
 <BaseLayout lang={lang}>
   <Hero lang={lang} />
   <About lang={lang} />
-  <Section id={sectionIds.prayerTimes} tone="navy" headingId="prayer-times-title">
-    <h2 id="prayer-times-title">{t('nav.prayerTimes')}</h2>
-  </Section>
+  <PrayerTimes lang={lang} />
   <Section id={sectionIds.midrash} tone="aviv" headingId="midrash-title">
     <h2 id="midrash-title">{t('nav.midrash')}</h2>
   </Section>
