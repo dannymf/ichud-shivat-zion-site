@@ -1,0 +1,167 @@
+---
+import { Image } from 'astro:assets';
+import arkPhoto from '@/assets/images/ark.jpg';
+import windowPhoto from '@/assets/images/window.jpg';
+import Section from '@/components/layout/Section.astro';
+import Button from '@/components/ui/Button.astro';
+import Diamond from '@/components/ui/Diamond.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { type Lang, useTranslations } from '@/i18n/ui';
+import { hero } from '@/lib/home-content';
+import { sectionIds } from '@/lib/navigation';
+import { linkOr, site } from '@/lib/settings';
+
+interface Props {
+  lang: Lang;
+}
+
+const t = useTranslations(Astro.props.lang);
+---
+
+<Section id={sectionIds.hero} headingId="hero-title">
+  <div class="hero">
+    <div class="hero__text">
+      <p class="hero__eyebrow">
+        <Diamond />
+        {site.address.street}, {site.address.city}
+      </p>
+      <h1 id="hero-title" class="hero__title">
+        {hero.titleLines.map((line) => (
+          <span class="hero__line">{line} </span>
+        ))}
+        <span class="hero__line hero__line--accent">{hero.titleAccent}</span>
+      </h1>
+      <p class="hero__intro">{hero.intro}</p>
+      <div class="hero__actions">
+        <Button href={`#${sectionIds.prayerTimes}`} size="lg">
+          {hero.primaryCta}
+          <Icon name="forward" />
+        </Button>
+        <Button href={linkOr(site.links.whatsapp)} variant="link">
+          <Icon name="chat" size={22} strokeWidth={1.6} />
+          {hero.whatsappCta}
+        </Button>
+      </div>
+    </div>
+
+    <div class="hero__art">
+      <div class="hero__outline" aria-hidden="true"></div>
+      <Image
+        class="hero__photo"
+        src={arkPhoto}
+        alt={t('hero.arkAlt')}
+        widths={[412, 824]}
+        sizes="(min-width: 60rem) 412px, 82vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <Image
+        class="hero__window"
+        src={windowPhoto}
+        alt={t('hero.windowAlt')}
+        widths={[184, 368]}
+        sizes="(min-width: 60rem) 184px, 37vw"
+      />
+    </div>
+  </div>
+</Section>
+
+<style>
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8) var(--space-8);
+  }
+
+  .hero__text {
+    flex: 1 1 32rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  .hero__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--color-gold-text);
+  }
+
+  .hero__title {
+    font-size: var(--text-hero);
+    line-height: 1.06;
+  }
+
+  .hero__line {
+    display: block;
+  }
+
+  .hero__line--accent {
+    color: var(--color-forest);
+  }
+
+  .hero__intro {
+    max-inline-size: 34rem;
+    font-size: var(--text-lg);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+  }
+
+  /* The arched photo of the ark, with a gold outline and a small arched window overlapping it. */
+  .hero__art {
+    position: relative;
+    flex: 0 1 31.25rem;
+    inline-size: min(100%, 31.25rem);
+    aspect-ratio: 500 / 664;
+    margin-inline: auto;
+  }
+
+  .hero__outline,
+  .hero__photo {
+    position: absolute;
+    border-radius: 999px 999px 0 0;
+  }
+
+  .hero__outline {
+    inset: 0 5.2% 1.8%;
+    border: 1.5px solid var(--color-gold);
+    border-block-end: 0;
+  }
+
+  .hero__photo {
+    inset: 2.7% 8.8% 1.8%;
+    inline-size: 82.4%;
+    block-size: 95.5%;
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+
+  .hero__window {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-start: -8%;
+    inline-size: 36.8%;
+    aspect-ratio: 184 / 252;
+    border: 0.5rem solid var(--color-ivory);
+    border-radius: 999px 999px 0.375rem 0.375rem;
+    object-fit: cover;
+    box-shadow: 0 1.125rem 2.5rem rgb(10 26 60 / 0.22);
+  }
+
+  @media (max-width: 59.99rem) {
+    .hero__window {
+      inset-inline-start: 0;
+      border-width: 0.375rem;
+    }
+  }
+</style>

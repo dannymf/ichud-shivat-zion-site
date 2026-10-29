@@ -1,0 +1,106 @@
+---
+import { Image } from 'astro:assets';
+import exteriorPhoto from '@/assets/images/exterior.jpg';
+import Section from '@/components/layout/Section.astro';
+import Diamond from '@/components/ui/Diamond.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { type Lang, useTranslations } from '@/i18n/ui';
+import { about } from '@/lib/home-content';
+import { sectionIds } from '@/lib/navigation';
+
+interface Props {
+  lang: Lang;
+}
+
+const t = useTranslations(Astro.props.lang);
+---
+
+<Section id={sectionIds.about} headingId="about-title">
+  <div class="about">
+    <div class="about__text">
+      <SectionHeading id="about-title" eyebrow={t('nav.about')} title={about.titleLines} />
+      {about.paragraphs.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+
+    <div class="about__photo">
+      <Image
+        src={exteriorPhoto}
+        alt={about.imageAlt}
+        widths={[560, 1120]}
+        sizes="(min-width: 60rem) 560px, 92vw"
+      />
+    </div>
+  </div>
+
+  <blockquote class="verse">
+    <Diamond size={16} />
+    <p class="verse__text">{about.verse.text}</p>
+    <footer class="verse__source">{about.verse.source}</footer>
+  </blockquote>
+</Section>
+
+<style>
+  .about {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-7) var(--space-8);
+  }
+
+  .about__text {
+    flex: 1 1 28rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    font-size: 1.25rem;
+  }
+
+  /* Photo with an offset gold frame behind it */
+  .about__photo {
+    position: relative;
+    flex: 1 1 30rem;
+    padding-block-end: 1.125rem;
+    padding-inline-end: 1.125rem;
+  }
+
+  .about__photo::before {
+    content: '';
+    position: absolute;
+    inset-block: 1.125rem 0;
+    inset-inline: 1.125rem 0;
+    border: 1.5px solid var(--color-gold);
+    border-radius: 0.625rem;
+  }
+
+  .about__photo img {
+    position: relative;
+    inline-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 0.625rem;
+  }
+
+  .verse {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    margin-block-start: var(--space-9);
+    text-align: center;
+  }
+
+  .verse__text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-2xl);
+    line-height: 1.25;
+    color: var(--color-navy);
+  }
+
+  .verse__source {
+    font-size: 1.0625rem;
+    color: var(--color-muted);
+  }
+</style>

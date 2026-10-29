@@ -1,0 +1,64 @@
+---
+import Divider from './Divider.astro';
+
+/**
+ * The heading block used at the top of most sections: a small eyebrow label,
+ * the heading (one or more lines), and the gold divider.
+ */
+interface Props {
+  /** Id for the heading, so <Section headingId> can name the section. */
+  id: string;
+  eyebrow?: string;
+  /** The heading text. Pass an array to control the line breaks. */
+  title: string | string[];
+  level?: 'h1' | 'h2';
+  align?: 'start' | 'center';
+  /** `dark` for navy or blue backgrounds. */
+  on?: 'light' | 'dark';
+}
+
+const { id, eyebrow, title, level = 'h2', align = 'start', on = 'light' } = Astro.props;
+const titleLines = Array.isArray(title) ? title : [title];
+const Heading = level;
+---
+
+<header class:list={['section-heading', `section-heading--${align}`, `section-heading--on-${on}`]}>
+  {eyebrow && <p class="section-heading__eyebrow">{eyebrow}</p>}
+  <Heading id={id} class="section-heading__title">
+    {titleLines.map((line) => (
+      <span class="section-heading__line">{line} </span>
+    ))}
+  </Heading>
+  <Divider align={align} on={on} />
+</header>
+
+<style>
+  .section-heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .section-heading--center {
+    align-items: center;
+    text-align: center;
+  }
+
+  .section-heading__eyebrow {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--color-gold-text);
+  }
+
+  .section-heading--on-dark .section-heading__eyebrow {
+    color: var(--color-gold-light);
+  }
+
+  .section-heading__title {
+    font-size: var(--text-3xl);
+  }
+
+  .section-heading__line {
+    display: block;
+  }
+</style>

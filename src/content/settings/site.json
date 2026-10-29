@@ -7,8 +7,12 @@
   "officeHours": "ימים א׳–ה׳, 9:00–12:30",
   "links": {
     "donate": "",
+    "membership": "",
     "whatsapp": "",
     "midrashSchedule": ""
+  },
+  "donation": {
+    "amountParam": ""
   },
   "features": {
     "english": false

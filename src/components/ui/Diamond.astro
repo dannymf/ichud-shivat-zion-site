@@ -1,0 +1,21 @@
+---
+/** The small four-colour stained-glass diamond ornament. Decorative. */
+interface Props {
+  size?: number;
+}
+
+const { size = 14 } = Astro.props;
+---
+
+<svg class="diamond" viewBox="0 0 16 16" width={size} height={size} aria-hidden="true">
+  <path d="M8 0L16 8H8Z" fill="var(--glass-amber)"></path>
+  <path d="M16 8L8 16V8Z" fill="var(--glass-red)"></path>
+  <path d="M8 16L0 8H8Z" fill="var(--glass-green)"></path>
+  <path d="M0 8L8 0V8Z" fill="var(--glass-cobalt)"></path>
+</svg>
+
+<style>
+  .diamond {
+    flex: none;
+  }
+</style>
