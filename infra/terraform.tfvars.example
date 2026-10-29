@@ -1,0 +1,8 @@
+# Copy to terraform.tfvars (gitignored) and fill in.
+
+# Cloudflare dashboard -> Workers & Pages -> account ID in the right sidebar.
+account_id = ""
+
+# Leave these two out until the domain is chosen (see infra/README.md).
+# domain      = "example.org.il"
+# zone_active = false

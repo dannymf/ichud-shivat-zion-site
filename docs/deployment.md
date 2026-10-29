@@ -1,39 +1,30 @@
 # Deployment
 
-The site is a static build (`dist/`) hosted on **Cloudflare Pages**. Staff edit content with
-**Sveltia CMS** at `/admin/`, which commits to this repository; every commit to `main` rebuilds the
-site. A nightly GitHub Action rebuilds it once more so the date and Shabbat times stay current.
+The site is a static build (`dist/`) served by a **Cloudflare Worker** (static assets, no Worker
+script). Staff edit content with **Sveltia CMS** at `/admin/`, which commits to this repository;
+every commit to `main` is verified, built and deployed by GitHub Actions.
 
 ```
-staff ──► /admin/ (Sveltia CMS) ──► commit to main ──► Cloudflare Pages build ──► site
-                     ▲                                        ▲
-     GitHub sign-in via sveltia-cms-auth worker      nightly rebuild (GitHub Actions)
+staff ──► /admin/ (Sveltia CMS) ──► commit to main ──► GitHub Actions: verify, build, wrangler deploy ──► site
+                     ▲
+     GitHub sign-in via sveltia-cms-auth worker
 ```
 
 Everything below is a one-time setup. Nothing in the code depends on these values except
 `base_url` in `public/admin/config.yml` and the `site` option in `astro.config.mjs`.
 
-## 1. Cloudflare Pages
+## 1. Cloudflare hosting
 
-1. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**, and choose
-   `dannymf/ichud-shivat-zion-site`.
-2. Build settings:
-   - Framework preset: **Astro**
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Environment variable: `NODE_VERSION` = `22`
-3. Production branch: `main`. Every pull request also gets its own preview URL.
-4. Add the custom domain under **Custom domains**, then set `site` in `astro.config.mjs` to it.
+Set up with Terraform and Wrangler; the steps, including the domain, are in
+[infra/README.md](../infra/README.md). In short: `terraform apply` creates a narrow deploy token and
+stores it as repository secrets, and `.github/workflows/deploy.yml` does the rest. Pull requests are
+checked by `ci.yml` but not deployed, so there are no preview URLs.
 
-## 2. Nightly rebuild
+## 2. Today's date and Shabbat times
 
-1. In the Pages project: **Settings → Builds → Deploy hooks → Add deploy hook**, for branch `main`.
-2. In GitHub: **Settings → Secrets and variables → Actions → New repository secret**, named
-   `CLOUDFLARE_DEPLOY_HOOK_URL`, with the hook URL as its value.
-
-`.github/workflows/nightly-rebuild.yml` calls the hook at 00:05 Israel time (01:05 in summer). Until
-the secret exists the workflow logs a warning and does nothing. Run it by hand from the **Actions**
-tab to test it.
+These are currently computed at build time (`src/lib/jewish-calendar.ts`), so they only change when
+the site is next deployed. Run the **Deploy** workflow from the **Actions** tab to refresh them, or
+move the calculation into the browser so no rebuild is needed.
 
 ## 3. CMS sign-in (sveltia-cms-auth)
 
