@@ -28,3 +28,11 @@ export const primaryNav: NavItem[] = [
 
 /** Links in the footer: the header menu plus donations. */
 export const footerNav: NavItem[] = [...primaryNav, { id: sectionIds.donate, label: 'nav.donate' }];
+
+/**
+ * Link to a home-page section. Root-relative, so it also works from other pages such as the 404;
+ * on the home page itself the browser just scrolls.
+ */
+export function sectionHref(id: NavItem['id']): string {
+  return `/#${id}`;
+}

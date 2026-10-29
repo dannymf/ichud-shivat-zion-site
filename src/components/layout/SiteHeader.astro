@@ -3,7 +3,7 @@ import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
 import Logo from '@/components/ui/Logo.astro';
 import { type Lang, useTranslations } from '@/i18n/ui';
-import { primaryNav, sectionIds } from '@/lib/navigation';
+import { primaryNav, sectionHref, sectionIds } from '@/lib/navigation';
 import { site } from '@/lib/settings';
 
 interface Props {
@@ -17,7 +17,7 @@ const t = useTranslations(lang);
 <header class="site-header">
   <div class="site-header__ribbon" aria-hidden="true"></div>
   <div class="site-header__bar">
-    <a class="brand" href={`#${sectionIds.hero}`}>
+    <a class="brand" href={sectionHref(sectionIds.hero)}>
       <Logo size={52} />
       <span class="brand__text">
         <span class="brand__name">{t('site.name')}</span>
@@ -34,7 +34,7 @@ const t = useTranslations(lang);
       <ul id="site-menu" class="site-nav__menu" popover>
         {primaryNav.map((item) => (
           <li>
-            <a href={`#${item.id}`}>{t(item.label)}</a>
+            <a href={sectionHref(item.id)}>{t(item.label)}</a>
           </li>
         ))}
       </ul>
@@ -46,7 +46,7 @@ const t = useTranslations(lang);
           EN
         </a>
       )}
-      <Button href={`#${sectionIds.donate}`} tone="amber">
+      <Button href={sectionHref(sectionIds.donate)} tone="amber">
         {t('cta.donate')}
       </Button>
     </div>

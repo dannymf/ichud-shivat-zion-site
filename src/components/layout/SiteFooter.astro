@@ -2,7 +2,7 @@
 import JoinBand from '@/components/layout/JoinBand.astro';
 import Logo from '@/components/ui/Logo.astro';
 import { type Lang, useTranslations } from '@/i18n/ui';
-import { footerNav } from '@/lib/navigation';
+import { footerNav, sectionHref } from '@/lib/navigation';
 import { site, telHref } from '@/lib/settings';
 
 interface Props {
@@ -31,7 +31,7 @@ const year = new Date().getFullYear();
         <ul class="site-footer__nav">
           {footerNav.map((item) => (
             <li>
-              <a href={`#${item.id}`}>{t(item.label)}</a>
+              <a href={sectionHref(item.id)}>{t(item.label)}</a>
             </li>
           ))}
         </ul>

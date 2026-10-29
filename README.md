@@ -80,11 +80,15 @@ commits to `main`. The site is hosted on Cloudflare Pages and rebuilt nightly so
 Shabbat times stay current. See [docs/content.md](docs/content.md) and
 [docs/deployment.md](docs/deployment.md).
 
-## Roadmap
+## Before launch
 
-1. Scaffold: tooling, CI, tokens, fonts, layout, header and footer, `<Section>`
-2. Hero, About, Donate, and the WhatsApp band in the footer
-3. Prayer times, with Hebcal for the Hebrew date, parasha, candle lighting and havdalah
-4. Midrash Aviv and the team section
-5. Sveltia CMS, hosting on Cloudflare Pages, and a nightly rebuild
-6. Mobile polish, accessibility audit, SEO basics
+The code is complete; these are content and accounts that only the community can supply.
+
+- [ ] Real prayer times, Midrash Aviv shiurim, team bios and photos (placeholders are marked with
+      square brackets in `src/content/`)
+- [ ] The founding year in `src/content/home/about.json`
+- [ ] Links in `src/content/settings/site.json`: donation page, membership, full prayer schedule,
+      WhatsApp group, Midrash Aviv schedule (the build lists any that are still empty)
+- [ ] The donation provider's amount parameter, if it has one
+- [ ] Domain → `site` in `astro.config.mjs` (enables the canonical URL and share image)
+- [ ] Cloudflare Pages, the nightly deploy hook and CMS sign-in ([docs/deployment.md](docs/deployment.md))
