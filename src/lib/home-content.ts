@@ -7,6 +7,9 @@ import aboutJson from '@/content/home/about.json';
 import donateJson from '@/content/home/donate.json';
 import heroJson from '@/content/home/hero.json';
 import joinJson from '@/content/home/join.json';
+import midrashJson from '@/content/home/midrash.json';
+import teamJson from '@/content/home/team.json';
+import { scheduleRowSchema } from './schedule';
 
 const text = z.string().trim().min(1);
 /** A heading split into lines, so editors control where it breaks. */
@@ -46,7 +49,30 @@ const joinSchema = z.object({
   cta: text,
 });
 
+const midrashSchema = z.object({
+  eyebrow: text,
+  intro: text,
+  detail: text,
+  schedule: z.object({
+    title: text,
+    subtitle: text,
+    rows: z.array(scheduleRowSchema).min(1),
+  }),
+  fullScheduleCta: text,
+});
+
+/** Section copy only; the people themselves are the `team` content collection. */
+const teamSchema = z.object({
+  eyebrow: text,
+  title: text,
+  /** Shown above the circles once the page's script has made them clickable. */
+  hint: text,
+  contactCta: text,
+});
+
 export const hero = heroSchema.parse(heroJson);
 export const about = aboutSchema.parse(aboutJson);
 export const donate = donateSchema.parse(donateJson);
 export const join = joinSchema.parse(joinJson);
+export const midrash = midrashSchema.parse(midrashJson);
+export const team = teamSchema.parse(teamJson);

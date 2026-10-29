@@ -31,11 +31,19 @@
   --glass-orange: #e0761c;
   --glass-red: #cf3a2b;
 
+  /* Monogram backgrounds for team members (deep enough for ivory letters) */
+  --monogram-cobalt: #1e50c8;
+  --monogram-forest: #23603b;
+  --monogram-orange: #b4541a;
+  --monogram-teal: #0f6e86;
+  --monogram-red: #a8322a;
+
   /* Midrash Aviv sub-brand */
   --color-aviv: #2f62a8;
   --color-aviv-ray: #376bb1;
   --color-aviv-ink: #0e2a4f;
   --color-aviv-highlight: #fbe3a0;
+  --color-aviv-muted: #dce6f4;
 
   /* Type. --font-kehila, --font-frank-ruhl and --font-aviv are set by the Fonts API (astro.config.mjs). */
   --font-display: var(--font-kehila), var(--font-frank-ruhl), serif;
