@@ -2,36 +2,36 @@
 import type { HTMLAttributes } from 'astro/types';
 
 /**
- * A link styled as a button. (Actions that stay on the page should use a real <button>.)
+ * A button-looking control. With `href` it renders a link (navigation); without one it renders
+ * a real <button> (form submission or an action on the page).
  *
  * - `plaque`: the pointed-end shape from the community's posters, for primary actions.
  * - `outline`: a rounded outline, for secondary actions.
  * - `link`: underlined text, for tertiary actions.
  */
-type Props = HTMLAttributes<'a'> & {
-  href: string;
+interface Look {
   variant?: 'plaque' | 'outline' | 'link';
   tone?: 'navy' | 'amber' | 'ivory';
   size?: 'md' | 'lg';
-};
+}
 
-const {
-  href,
-  variant = 'plaque',
-  tone = 'navy',
-  size = 'md',
-  class: className,
-  ...attrs
-} = Astro.props;
+type Props =
+  | (Look & HTMLAttributes<'a'> & { href: string })
+  | (Look & HTMLAttributes<'button'> & { href?: undefined });
+
+const { variant = 'plaque', tone = 'navy', size = 'md', class: className, ...attrs } = Astro.props;
+const classes = ['button', `button--${variant}`, `button--${tone}`, `button--${size}`, className];
 ---
 
-<a
-  href={href}
-  class:list={['button', `button--${variant}`, `button--${tone}`, `button--${size}`, className]}
-  {...attrs}
->
-  <slot />
-</a>
+{'href' in attrs && attrs.href !== undefined ? (
+  <a class:list={classes} {...attrs}>
+    <slot />
+  </a>
+) : (
+  <button type="button" class:list={classes} {...attrs}>
+    <slot />
+  </button>
+)}
 
 <style>
   .button {
@@ -40,14 +40,19 @@ const {
     justify-content: center;
     gap: var(--space-3);
     min-block-size: 2.75rem;
+    border: 0;
+    background: none;
     text-decoration: none;
     font-weight: 500;
+    cursor: pointer;
   }
 
   /* Plaque */
   .button--plaque {
-    block-size: 3.25rem;
-    padding-inline: 2.25rem;
+    min-block-size: 3.25rem;
+    padding: var(--space-2) 2.25rem;
+    line-height: 1.2;
+    text-align: center;
     font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--text-base);
@@ -62,7 +67,7 @@ const {
   }
 
   .button--plaque.button--lg {
-    block-size: 3.625rem;
+    min-block-size: 3.625rem;
     padding-inline: 2.75rem;
     font-size: var(--text-lg);
   }

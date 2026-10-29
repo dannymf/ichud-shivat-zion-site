@@ -1,0 +1,205 @@
+---
+import Section from '@/components/layout/Section.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Logo from '@/components/ui/Logo.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { type Lang, useTranslations } from '@/i18n/ui';
+import { donate } from '@/lib/home-content';
+import { sectionIds } from '@/lib/navigation';
+import { linkOr, site } from '@/lib/settings';
+
+interface Props {
+  lang: Lang;
+}
+
+const t = useTranslations(Astro.props.lang);
+
+// The form sends the visitor to the donation provider. Amount buttons are shown only when the
+// provider accepts a pre-filled amount in the URL (settings → donation.amountParam).
+const { amountParam } = site.donation;
+const showAmounts = amountParam !== '' && donate.amounts.length > 0;
+const formatShekels = new Intl.NumberFormat('he-IL', {
+  style: 'currency',
+  currency: 'ILS',
+  maximumFractionDigits: 0,
+}).format;
+const defaultAmount = donate.amounts[Math.min(1, donate.amounts.length - 1)];
+---
+
+<Section id={sectionIds.donate} headingId="donate-title">
+  <div class="donate">
+    <div class="donate__text">
+      <SectionHeading id="donate-title" eyebrow={t('nav.donate')} title={donate.titleLines} />
+      <p>{donate.text}</p>
+      <Button href={linkOr(site.links.membership)} variant="link">
+        {donate.membershipCta}
+        <Icon name="forward" />
+      </Button>
+    </div>
+
+    <div class="donate__card-wrap">
+      <form class="donate__card" action={linkOr(site.links.donate)} method="get">
+        <div class="donate__card-head">
+          <Logo size={60} class="donate__logo" />
+          <h3>{donate.cardTitle}</h3>
+        </div>
+
+        {showAmounts && (
+          <fieldset class="donate__amounts">
+            <legend class="sr-only">{t('donate.amountLegend')}</legend>
+            {donate.amounts.map((amount) => (
+              <label class="donate__amount">
+                <input
+                  type="radio"
+                  name={amountParam}
+                  value={amount}
+                  checked={amount === defaultAmount}
+                />
+                <span>{formatShekels(amount)}</span>
+              </label>
+            ))}
+            <label class="donate__amount">
+              <input type="radio" name={amountParam} value="" />
+              <span>{donate.otherAmountLabel}</span>
+            </label>
+          </fieldset>
+        )}
+
+        <Button type="submit" tone="amber" size="lg">
+          {donate.cta}
+        </Button>
+        <p class="donate__note">{donate.cardNote}</p>
+      </form>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .donate {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+  }
+
+  .donate__text {
+    flex: 1 1 28rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+    font-size: 1.25rem;
+  }
+
+  .donate__text p {
+    max-inline-size: 33rem;
+  }
+
+  /* An arch-topped card inside a gold arch outline, echoing the community's posters */
+  .donate__card-wrap {
+    flex: 0 1 29.375rem;
+    inline-size: min(100%, 29.375rem);
+    container-type: inline-size;
+    position: relative;
+    padding: 0.875rem 0.875rem 0;
+    margin-inline: auto;
+  }
+
+  .donate__card-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1.5px solid var(--color-gold);
+    border-block-end: 0;
+    border-radius: 50cqi 50cqi 0 0;
+  }
+
+  .donate__card {
+    --heading-color: var(--color-navy);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    padding: 5.25rem 2.75rem 2.25rem;
+    background: var(--color-paper);
+    border-radius: calc(50cqi - 0.875rem) calc(50cqi - 0.875rem) var(--radius-md) var(--radius-md);
+    box-shadow: 0 1.5rem 3rem rgb(15 37 82 / 0.12);
+  }
+
+  .donate__card-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    text-align: center;
+  }
+
+  .donate__card-head :global(.donate__logo) {
+    color: var(--color-gold);
+  }
+
+  .donate__card-head h3 {
+    font-size: 2rem;
+  }
+
+  .donate__amounts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    padding: 0;
+    border: 0;
+  }
+
+  .donate__amount {
+    position: relative;
+  }
+
+  .donate__amount input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .donate__amount span {
+    display: grid;
+    place-items: center;
+    block-size: 3.75rem;
+    border: 1.5px solid rgb(15 37 82 / 0.35);
+    border-radius: var(--radius-sm);
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--color-navy);
+  }
+
+  .donate__amount input:checked + span {
+    border-color: var(--color-navy);
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+
+  .donate__amount input:focus-visible + span {
+    outline: 3px solid var(--glass-cobalt);
+    outline-offset: 2px;
+  }
+
+  .donate__note {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    text-align: center;
+  }
+
+  @media (max-width: 30rem) {
+    .donate__card {
+      padding-inline: var(--space-5);
+      padding-block-start: 4rem;
+    }
+
+    .donate__card :global(.button--plaque) {
+      padding-inline: var(--space-5);
+    }
+  }
+</style>

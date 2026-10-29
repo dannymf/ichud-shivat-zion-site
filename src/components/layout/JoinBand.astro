@@ -1,0 +1,81 @@
+---
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { join } from '@/lib/home-content';
+import { linkOr, site } from '@/lib/settings';
+---
+
+<section class="join" aria-labelledby="join-title">
+  <div class="join__inner">
+    <div class="join__text">
+      <span class="join__icon" aria-hidden="true">
+        <Icon name="chat" size={44} strokeWidth={1.4} />
+      </span>
+      <div>
+        <h2 id="join-title">{join.title}</h2>
+        <p>{join.text}</p>
+      </div>
+    </div>
+    <Button href={linkOr(site.links.whatsapp)} size="lg">
+      {join.cta}
+      <Icon name="forward" />
+    </Button>
+  </div>
+</section>
+
+<style>
+  .join {
+    --heading-color: var(--color-navy);
+    background: var(--color-amber);
+    color: var(--color-navy);
+    padding: var(--space-7) var(--gutter);
+  }
+
+  .join__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6) var(--space-7);
+    max-inline-size: var(--content-max);
+    margin-inline: auto;
+  }
+
+  .join__text {
+    flex: 1 1 32rem;
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  .join__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    inline-size: 5.25rem;
+    block-size: 5.25rem;
+    border-radius: 50%;
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+
+  .join h2 {
+    font-size: var(--text-2xl);
+  }
+
+  .join p {
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 40rem) {
+    .join__text {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .join__inner > :global(.button) {
+      inline-size: 100%;
+    }
+  }
+</style>
