@@ -1,0 +1,253 @@
+# Sveltia CMS configuration: what staff can edit at /admin/.
+#
+# Keep these fields in step with the schemas that validate them at build time:
+#   src/lib/settings.ts       → settings/site
+#   src/lib/home-content.ts   → home/hero, about, midrash, team, donate, join
+#   src/lib/prayer-times.ts   → home/prayer-times
+#   src/content.config.ts     → team
+# A mismatch shows up as a failed build on the CMS commit, never as a broken page.
+
+backend:
+  name: github
+  repo: dannymf/ichud-shivat-zion-site
+  branch: main
+  # TODO: the URL of the sveltia-cms-auth worker (see docs/deployment.md).
+  base_url: https://sveltia-cms-auth.example.workers.dev
+  commit_messages:
+    create: 'CMS: add {{collection}} “{{slug}}”'
+    update: 'CMS: update {{collection}} “{{slug}}”'
+    delete: 'CMS: delete {{collection}} “{{slug}}”'
+    uploadMedia: 'CMS: upload “{{path}}”'
+    deleteMedia: 'CMS: delete “{{path}}”'
+
+# Uploads that do not belong to a collection (none today).
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: settings
+    label: הגדרות האתר
+    files:
+      - name: site
+        label: פרטים וקישורים
+        file: src/content/settings/site.json
+        fields:
+          - name: address
+            label: כתובת
+            widget: object
+            fields:
+              - { name: street, label: רחוב ומספר, widget: string }
+              - { name: city, label: עיר, widget: string }
+          - { name: phone, label: טלפון המשרד, widget: string }
+          - { name: officeHours, label: שעות המשרד, widget: string }
+          - name: links
+            label: קישורים
+            hint: השאירו ריק קישור שעדיין לא קיים. כפתור בלי קישור לא יוביל לשום מקום.
+            widget: object
+            fields:
+              - { name: donate, label: דף התרומות, widget: string, required: false }
+              - { name: membership, label: תשלום דמי חבר, widget: string, required: false }
+              - {
+                  name: prayerSchedule,
+                  label: לוח זמני התפילות המלא,
+                  widget: string,
+                  required: false,
+                }
+              - { name: whatsapp, label: קבוצת הוואטסאפ, widget: string, required: false }
+              - {
+                  name: midrashSchedule,
+                  label: הלוח המלא של מדרש אביב,
+                  widget: string,
+                  required: false,
+                }
+          - name: donation
+            label: תרומות
+            widget: object
+            fields:
+              - name: amountParam
+                label: שם הפרמטר לסכום
+                hint: אם ספק התרומות יודע לקבל סכום בכתובת (למשל amount), כתבו כאן את שם הפרמטר. אחרת השאירו ריק וכפתורי הסכומים לא יוצגו.
+                widget: string
+                required: false
+          - name: features
+            label: אפשרויות
+            widget: object
+            fields:
+              - { name: english, label: להציג מעבר לאנגלית, widget: boolean, default: false }
+
+  - name: home
+    label: עמוד הבית
+    files:
+      - name: hero
+        label: פתיחה
+        file: src/content/home/hero.json
+        fields:
+          - name: titleLines
+            label: כותרת (שורה בכל פריט)
+            widget: list
+            field: { name: line, label: שורה, widget: string }
+          - { name: titleAccent, label: שורה אחרונה (בירוק), widget: string }
+          - { name: intro, label: פסקת פתיחה, widget: text }
+          - { name: primaryCta, label: כפתור לזמני התפילות, widget: string }
+          - { name: whatsappCta, label: קישור לוואטסאפ, widget: string }
+
+      - name: about
+        label: אודות
+        file: src/content/home/about.json
+        fields:
+          - name: titleLines
+            label: כותרת (שורה בכל פריט)
+            widget: list
+            field: { name: line, label: שורה, widget: string }
+          - name: paragraphs
+            label: פסקאות
+            widget: list
+            field: { name: paragraph, label: פסקה, widget: text }
+          - { name: imageAlt, label: תיאור התמונה (לקוראי מסך), widget: string }
+          - name: verse
+            label: פסוק
+            widget: object
+            fields:
+              - { name: text, label: הפסוק, widget: string }
+              - { name: source, label: מקור, widget: string }
+
+      - name: prayerTimes
+        label: זמני תפילות
+        file: src/content/home/prayer-times.json
+        fields:
+          - { name: title, label: כותרת, widget: string }
+          - name: candleLightingMinutes
+            label: הדלקת נרות – דקות לפני השקיעה
+            hint: הזמנים של הדלקת נרות וצאת השבת מחושבים אוטומטית לתל אביב.
+            widget: number
+            value_type: int
+            min: 10
+            max: 60
+          - name: weekdays
+            label: ימי חול
+            widget: object
+            fields:
+              - { name: title, label: כותרת, widget: string }
+              - { name: subtitle, label: כותרת משנה, widget: string }
+              - &rows
+                name: rows
+                label: תפילות
+                widget: list
+                fields:
+                  - { name: label, label: תפילה, widget: string }
+                  - name: time
+                    label: שעה
+                    widget: string
+                    pattern: ['^([01]\d|2[0-3]):[0-5]\d$', 'שעה בפורמט 24 שעות, למשל 06:30']
+          - name: shabbat
+            label: שבת
+            widget: object
+            fields:
+              - { name: title, label: כותרת, widget: string }
+              - *rows
+          - { name: fullScheduleCta, label: קישור ללוח המלא, widget: string }
+
+      - name: midrash
+        label: מדרש אביב
+        file: src/content/home/midrash.json
+        fields:
+          - { name: eyebrow, label: כותרת עליונה, widget: string }
+          - { name: intro, label: פסקת פתיחה, widget: text }
+          - { name: detail, label: פסקה נוספת, widget: text }
+          - name: schedule
+            label: לוח שבועי
+            widget: object
+            fields:
+              - { name: title, label: כותרת, widget: string }
+              - { name: subtitle, label: כותרת משנה, widget: string }
+              - name: rows
+                label: שיעורים
+                widget: list
+                fields:
+                  - { name: label, label: יום ושיעור, widget: string }
+                  - name: time
+                    label: שעה
+                    widget: string
+                    pattern: ['^([01]\d|2[0-3]):[0-5]\d$', 'שעה בפורמט 24 שעות, למשל 20:30']
+          - { name: fullScheduleCta, label: כפתור ללוח המלא, widget: string }
+
+      - name: team
+        label: הצוות – כותרות
+        file: src/content/home/team.json
+        fields:
+          - { name: eyebrow, label: כותרת עליונה, widget: string }
+          - { name: title, label: כותרת, widget: string }
+          - { name: hint, label: הנחיה מעל העיגולים, widget: string }
+          - { name: contactCta, label: כפתור יצירת קשר, widget: string }
+
+      - name: donate
+        label: תרומה
+        file: src/content/home/donate.json
+        fields:
+          - name: titleLines
+            label: כותרת (שורה בכל פריט)
+            widget: list
+            field: { name: line, label: שורה, widget: string }
+          - { name: text, label: פסקה, widget: text }
+          - { name: cardTitle, label: כותרת הכרטיס, widget: string }
+          - { name: cardNote, label: הערה מתחת לכפתור, widget: string }
+          - name: amounts
+            label: סכומים מוצעים (בשקלים)
+            widget: list
+            field: { name: amount, label: סכום, widget: number, value_type: int, min: 1 }
+          - { name: otherAmountLabel, label: תווית "סכום אחר", widget: string }
+          - { name: cta, label: כפתור התרומה, widget: string }
+          - { name: membershipCta, label: קישור לדמי חבר, widget: string }
+
+      - name: join
+        label: וואטסאפ
+        file: src/content/home/join.json
+        fields:
+          - { name: title, label: כותרת, widget: string }
+          - { name: text, label: טקסט, widget: string }
+          - { name: cta, label: כפתור, widget: string }
+
+  - name: team
+    label: הצוות
+    label_singular: איש צוות
+    folder: src/content/team
+    extension: md
+    format: frontmatter
+    create: true
+    slug: 'member-{{uuid_short}}'
+    identifier_field: name
+    summary: '{{order}} · {{name}} – {{role}}'
+    sortable_fields: [order, name]
+    # Photos live in src/assets/team so the build can optimise them.
+    media_folder: /src/assets/team
+    public_folder: ../../assets/team
+    fields:
+      - { name: name, label: שם, widget: string }
+      - { name: role, label: תפקיד, widget: string }
+      - name: order
+        label: מיקום ברשימה
+        widget: number
+        value_type: int
+        hint: המספר הקטן מופיע ראשון
+      - name: color
+        label: צבע העיגול (כשאין תמונה)
+        widget: select
+        options:
+          - { label: כחול, value: cobalt }
+          - { label: ירוק, value: forest }
+          - { label: כתום, value: orange }
+          - { label: טורקיז, value: teal }
+          - { label: אדום, value: red }
+      - name: initial
+        label: אות בעיגול
+        widget: string
+        required: false
+        hint: 'ברירת המחדל היא האות הראשונה בשם, אחרי "הרב"'
+      - { name: photo, label: תמונה, widget: image, required: false }
+      - name: contact
+        label: קישור ליצירת קשר
+        widget: string
+        required: false
+        hint: 'mailto:name@example.org.il, tel:+972501234567 או https://…'
+        pattern: ['^(mailto:|tel:|https://)', 'הקישור צריך להתחיל ב-mailto:, tel: או https://']
+      - { name: body, label: ביוגרפיה, widget: markdown }

@@ -1,0 +1,24 @@
+name: Nightly rebuild
+
+# The home page shows today's Hebrew date and this week's Shabbat times, which are computed at
+# build time. Rebuilding shortly after midnight Israel time keeps them current.
+
+on:
+  schedule:
+    # 22:05 UTC = 00:05 Israel standard time / 01:05 Israel summer time
+    - cron: '5 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger a Cloudflare Pages build
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "::warning::CLOUDFLARE_DEPLOY_HOOK_URL is not set; see docs/deployment.md. Skipping."
+            exit 0
+          fi
+          curl --fail --silent --show-error --request POST "$DEPLOY_HOOK_URL"
