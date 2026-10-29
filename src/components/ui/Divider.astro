@@ -1,0 +1,43 @@
+---
+/** The gold rule with a stained-glass diamond, used under section headings. */
+interface Props {
+  align?: 'start' | 'center';
+  /** `dark` for use on navy or blue backgrounds. */
+  on?: 'light' | 'dark';
+}
+
+const { align = 'center', on = 'light' } = Astro.props;
+---
+
+<div class:list={['divider', `divider--${align}`, `divider--on-${on}`]} aria-hidden="true">
+  <span class="divider__rule"></span>
+  <svg class="divider__diamond" viewBox="0 0 16 16" width="14" height="14">
+    <path d="M8 0L16 8H8Z" fill="var(--glass-amber)"></path>
+    <path d="M16 8L8 16V8Z" fill="var(--glass-red)"></path>
+    <path d="M8 16L0 8H8Z" fill="var(--glass-green)"></path>
+    <path d="M0 8L8 0V8Z" fill="var(--glass-cobalt)"></path>
+  </svg>
+  <span class="divider__rule"></span>
+</div>
+
+<style>
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .divider--center {
+    justify-content: center;
+  }
+
+  .divider__rule {
+    inline-size: 4.5rem;
+    block-size: 1px;
+    background: var(--color-gold);
+  }
+
+  .divider--on-dark .divider__rule {
+    background: var(--color-gold-light);
+  }
+</style>

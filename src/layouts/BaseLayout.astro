@@ -1,0 +1,59 @@
+---
+import { Font } from 'astro:assets';
+import SiteFooter from '@/components/layout/SiteFooter.astro';
+import SiteHeader from '@/components/layout/SiteHeader.astro';
+import { defaultLang, type Lang, textDirection, useTranslations } from '@/i18n/ui';
+import '@/styles/global.css';
+
+interface Props {
+  lang?: Lang;
+  /** Page title; the site name is appended. Leave out on the home page. */
+  title?: string;
+  description?: string;
+}
+
+const { lang = defaultLang, title, description } = Astro.props;
+const t = useTranslations(lang);
+const pageTitle = title ? `${title} · ${t('site.name')}` : t('site.name');
+---
+
+<!doctype html>
+<html lang={lang} dir={textDirection[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description ?? t('site.description')} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <Font cssVariable="--font-kehila" preload />
+    <Font cssVariable="--font-frank-ruhl" preload />
+    <Font cssVariable="--font-aviv" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      {t('a11y.skipToContent')}
+    </a>
+    <SiteHeader lang={lang} />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter lang={lang} />
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    inset-inline-start: var(--space-4);
+    inset-block-start: var(--space-4);
+    z-index: 20;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-navy);
+    color: var(--color-ivory);
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus {
+    transform: none;
+  }
+</style>

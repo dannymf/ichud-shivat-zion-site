@@ -1,0 +1,32 @@
+---
+import Section from '@/components/layout/Section.astro';
+import { useTranslations } from '@/i18n/ui';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { sectionIds } from '@/lib/navigation';
+
+const t = useTranslations('he');
+
+// The section components (Hero, About, PrayerTimes, MidrashAviv, Team, Donate) replace these
+// shells in the following pull requests. Until then each panel shows its heading only.
+---
+
+<BaseLayout>
+  <Section id={sectionIds.hero} headingId="hero-title">
+    <h1 id="hero-title">{t('site.name')}</h1>
+  </Section>
+  <Section id={sectionIds.about} headingId="about-title">
+    <h2 id="about-title">{t('nav.about')}</h2>
+  </Section>
+  <Section id={sectionIds.prayerTimes} tone="navy" headingId="prayer-times-title">
+    <h2 id="prayer-times-title">{t('nav.prayerTimes')}</h2>
+  </Section>
+  <Section id={sectionIds.midrash} tone="aviv" headingId="midrash-title">
+    <h2 id="midrash-title">{t('nav.midrash')}</h2>
+  </Section>
+  <Section id={sectionIds.team} tone="sand" headingId="team-title">
+    <h2 id="team-title">{t('nav.team')}</h2>
+  </Section>
+  <Section id={sectionIds.donate} headingId="donate-title">
+    <h2 id="donate-title">{t('nav.donate')}</h2>
+  </Section>
+</BaseLayout>

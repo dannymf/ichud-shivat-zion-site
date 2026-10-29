@@ -1,0 +1,16 @@
+{
+  "address": {
+    "street": "רחוב בן יהודה 86",
+    "city": "תל אביב"
+  },
+  "phone": "03-5224047",
+  "officeHours": "ימים א׳–ה׳, 9:00–12:30",
+  "links": {
+    "donate": "",
+    "whatsapp": "",
+    "midrashSchedule": ""
+  },
+  "features": {
+    "english": false
+  }
+}

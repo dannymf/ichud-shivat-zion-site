@@ -1,0 +1,76 @@
+---
+/**
+ * One full-screen panel of the home page.
+ *
+ * Fills the screen below the sticky header and snaps into place while scrolling.
+ * Content taller than the screen simply makes the panel taller.
+ * Give the section's heading `id={headingId}` so the section is named for screen readers.
+ */
+interface Props {
+  id: string;
+  /** Background. `navy` and `aviv` switch text to light colours. */
+  tone?: 'ivory' | 'sand' | 'navy' | 'aviv';
+  /** Id of the heading that names this section. */
+  headingId?: string;
+  /** Vertically centre the content in the panel (default) or start it at the top. */
+  align?: 'center' | 'start';
+  class?: string;
+}
+
+const { id, tone = 'ivory', headingId, align = 'center', class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['section', `section--${tone}`, `section--align-${align}`, className]}
+  aria-labelledby={headingId}
+>
+  <slot name="background" />
+  <div class="section__inner">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-block-size: calc(100svh - var(--header-height));
+    padding-block: var(--space-8);
+    padding-inline: var(--gutter);
+    scroll-snap-align: start;
+    overflow: clip;
+  }
+
+  .section--align-center {
+    justify-content: center;
+  }
+
+  .section__inner {
+    position: relative;
+    inline-size: 100%;
+    max-inline-size: var(--content-max);
+    margin-inline: auto;
+  }
+
+  .section--ivory {
+    background: var(--color-ivory);
+  }
+
+  .section--sand {
+    background: var(--color-sand);
+  }
+
+  .section--navy {
+    --heading-color: var(--color-ivory);
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+
+  .section--aviv {
+    --heading-color: var(--color-ivory);
+    background: var(--color-aviv);
+    color: var(--color-ivory);
+  }
+</style>
