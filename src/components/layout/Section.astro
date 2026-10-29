@@ -14,15 +14,30 @@ interface Props {
   headingId?: string;
   /** Vertically centre the content in the panel (default) or start it at the top. */
   align?: 'center' | 'start';
+  /** `compact` trims the top and bottom padding on short screens, for panels with a lot to fit. */
+  density?: 'normal' | 'compact';
   class?: string;
 }
 
-const { id, tone = 'ivory', headingId, align = 'center', class: className } = Astro.props;
+const {
+  id,
+  tone = 'ivory',
+  headingId,
+  align = 'center',
+  density = 'normal',
+  class: className,
+} = Astro.props;
 ---
 
 <section
   id={id}
-  class:list={['section', `section--${tone}`, `section--align-${align}`, className]}
+  class:list={[
+    'section',
+    `section--${tone}`,
+    `section--align-${align}`,
+    `section--${density}`,
+    className,
+  ]}
   aria-labelledby={headingId}
 >
   <slot name="background" />
@@ -41,6 +56,10 @@ const { id, tone = 'ivory', headingId, align = 'center', class: className } = As
     padding-inline: var(--gutter);
     scroll-snap-align: start;
     overflow: clip;
+  }
+
+  .section--compact {
+    padding-block: clamp(var(--space-4), 3svh, var(--space-8));
   }
 
   .section--align-center {

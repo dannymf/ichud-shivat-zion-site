@@ -63,11 +63,11 @@
       "subtitle": "Sunday to Friday",
       "rows": [
         {
-          "label": "Shacharit · first minyan",
+          "label": "Shacharit · 1st minyan",
           "time": "06:30"
         },
         {
-          "label": "Shacharit · second minyan",
+          "label": "Shacharit · 2nd minyan",
           "time": "08:00"
         },
         {
