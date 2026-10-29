@@ -1,0 +1,77 @@
+---
+import { type Lang, languages, languageShort, useTranslations } from '@/i18n/ui';
+import { homePath } from '@/lib/navigation';
+
+/**
+ * The עב | EN switch. Links to the same page in the other language, keeping the section in view.
+ * Each link's accessible name starts with its visible text ("EN · English"), so voice control works.
+ */
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const options = Object.keys(languages) as Lang[];
+---
+
+<div class="lang-switch" role="group" aria-label={t('lang.label')} data-lang-switch>
+  {options.map((option) => (
+    <a
+      class="lang-switch__option"
+      href={homePath(option)}
+      hreflang={option}
+      lang={option}
+      aria-label={`${languageShort[option]} · ${languages[option]}`}
+      aria-current={option === lang ? 'page' : undefined}
+    >
+      {languageShort[option]}
+    </a>
+  ))}
+</div>
+
+<script>
+  // Carry the current section (#about, #team…) over to the other language.
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-lang-switch] a')) {
+    link.addEventListener('click', () => {
+      if (window.location.hash) link.hash = window.location.hash;
+    });
+  }
+</script>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.1875rem;
+    border: 1px solid var(--color-gold);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .lang-switch__option {
+    display: grid;
+    place-items: center;
+    min-inline-size: 2.75rem;
+    block-size: 2.25rem;
+    padding-inline: 0.75rem;
+    border-radius: var(--radius-pill);
+    color: var(--color-navy);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: background-color 150ms ease;
+  }
+
+  .lang-switch__option:hover {
+    background: color-mix(in srgb, var(--color-navy) 8%, transparent);
+  }
+
+  .lang-switch__option[aria-current='page'] {
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+</style>

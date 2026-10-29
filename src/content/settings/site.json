@@ -1,21 +1,38 @@
 {
-  "address": {
-    "street": "רחוב בן יהודה 86",
-    "city": "תל אביב"
+  "he": {
+    "address": {
+      "street": "רחוב בן יהודה 86",
+      "city": "תל אביב"
+    },
+    "phone": "03-5224047",
+    "officeHours": "ימים א׳–ה׳, 9:00–17:00",
+    "links": {
+      "donate": "",
+      "prayerSchedule": "",
+      "whatsapp": "",
+      "midrashSchedule": ""
+    },
+    "donation": {
+      "amountParam": "",
+      "purposeParam": "purpose"
+    }
   },
-  "phone": "03-5224047",
-  "officeHours": "ימים א׳–ה׳, 9:00–17:00",
-  "links": {
-    "donate": "",
-    "prayerSchedule": "",
-    "whatsapp": "",
-    "midrashSchedule": ""
-  },
-  "donation": {
-    "amountParam": "",
-    "purposeParam": "purpose"
-  },
-  "features": {
-    "english": false
+  "en": {
+    "address": {
+      "street": "86 Ben Yehuda St.",
+      "city": "Tel Aviv"
+    },
+    "phone": "03-5224047",
+    "officeHours": "Sun–Thu, 9:00–17:00",
+    "links": {
+      "donate": "",
+      "prayerSchedule": "",
+      "whatsapp": "",
+      "midrashSchedule": ""
+    },
+    "donation": {
+      "amountParam": "",
+      "purposeParam": "purpose"
+    }
   }
 }

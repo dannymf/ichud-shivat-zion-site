@@ -1,0 +1,16 @@
+{
+  "he": {
+    "name": "יוני",
+    "role": "נשיא הקהילה",
+    "bio": "[כמה שורות על יוני: מאז מתי הוא בקהילה, במה הוא עוסק ומה הוא מוביל כנשיא הקהילה.]",
+    "order": 1,
+    "color": "cobalt"
+  },
+  "en": {
+    "name": "Yoni",
+    "role": "Community President",
+    "bio": "[A few lines about Yoni: how long he has been part of the community, what he does, and what he leads as president.]",
+    "order": 1,
+    "color": "cobalt"
+  }
+}

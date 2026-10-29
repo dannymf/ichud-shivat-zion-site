@@ -1,0 +1,26 @@
+---
+import About from '@/components/sections/About.astro';
+import Donate from '@/components/sections/Donate.astro';
+import Hero from '@/components/sections/Hero.astro';
+import MidrashAviv from '@/components/sections/MidrashAviv.astro';
+import PrayerTimes from '@/components/sections/PrayerTimes.astro';
+import Team from '@/components/sections/Team.astro';
+import type { Lang } from '@/i18n/ui';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+/** The one-page site. src/pages/index.astro (Hebrew) and src/pages/en/index.astro render it. */
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<BaseLayout lang={lang}>
+  <Hero lang={lang} />
+  <About lang={lang} />
+  <PrayerTimes lang={lang} />
+  <MidrashAviv lang={lang} />
+  <Team lang={lang} />
+  <Donate lang={lang} />
+</BaseLayout>

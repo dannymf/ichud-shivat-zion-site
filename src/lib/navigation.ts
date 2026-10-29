@@ -1,4 +1,5 @@
-import type { UiKey } from '@/i18n/ui';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import type { Lang, UiKey } from '@/i18n/ui';
 
 /**
  * Sections of the home page, in page order. Section components use these ids,
@@ -29,10 +30,15 @@ export const primaryNav: NavItem[] = [
 /** Links in the footer: the header menu plus donations. */
 export const footerNav: NavItem[] = [...primaryNav, { id: sectionIds.donate, label: 'nav.donate' }];
 
+/** The home page in the given language: "/" for Hebrew, "/en/" for English. */
+export function homePath(lang: Lang): string {
+  return getRelativeLocaleUrl(lang);
+}
+
 /**
- * Link to a home-page section. Root-relative, so it also works from other pages such as the 404;
- * on the home page itself the browser just scrolls.
+ * Link to a home-page section, e.g. "/en/#about". Root-relative, so it also works from other
+ * pages such as the 404; on the home page itself the browser just scrolls.
  */
-export function sectionHref(id: NavItem['id']): string {
-  return `/#${id}`;
+export function sectionHref(id: NavItem['id'], lang: Lang): string {
+  return `${homePath(lang)}#${id}`;
 }

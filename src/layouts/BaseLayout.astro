@@ -1,10 +1,11 @@
 ---
 import { Font, getImage } from 'astro:assets';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import shareImage from '@/assets/images/exterior.jpg';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
-import { defaultLang, type Lang, textDirection, useTranslations } from '@/i18n/ui';
-import { site } from '@/lib/settings';
+import { defaultLang, type Lang, languages, textDirection, useTranslations } from '@/i18n/ui';
+import { siteSettings } from '@/lib/settings';
 import '@/styles/global.css';
 
 interface Props {
@@ -18,12 +19,24 @@ interface Props {
 
 const { lang = defaultLang, title, description, noindex = false } = Astro.props;
 const t = useTranslations(lang);
+const site = siteSettings(lang);
 const pageTitle = title ? `${title} · ${t('site.name')}` : t('site.name');
 const pageDescription = description ?? t('site.description');
 
 // Absolute URLs (canonical link, share image) need `site` in astro.config.mjs; until the domain is
 // chosen they are left out rather than guessed.
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+
+// The same page in each language, for search engines (hreflang) and link previews.
+const ogLocale: Record<Lang, string> = { he: 'he_IL', en: 'en_US' };
+const pathInLang = Astro.url.pathname.replace(new RegExp(`^/${lang}(?=/|$)`), '');
+const alternates =
+  Astro.site && !noindex
+    ? (Object.keys(languages) as Lang[]).map((code) => ({
+        code,
+        href: new URL(getRelativeLocaleUrl(code, pathInLang), Astro.site).href,
+      }))
+    : [];
 const ogImage = Astro.site
   ? new URL((await getImage({ src: shareImage, width: 1200, format: 'jpg' })).src, Astro.site).href
   : undefined;
@@ -53,12 +66,15 @@ const structuredData = {
     <meta name="description" content={pageDescription} />
     {noindex && <meta name="robots" content="noindex" />}
     {canonical && <link rel="canonical" href={canonical} />}
+    {alternates.map(({ code, href }) => (
+      <link rel="alternate" hreflang={code} href={href} />
+    ))}
     <meta name="theme-color" content="#f7f1e4" />
     <meta name="color-scheme" content="light" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="he_IL" />
+    <meta property="og:locale" content={ogLocale[lang]} />
     <meta property="og:site_name" content={t('site.name')} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />

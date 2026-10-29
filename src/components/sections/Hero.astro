@@ -7,15 +7,18 @@ import Button from '@/components/ui/Button.astro';
 import Diamond from '@/components/ui/Diamond.astro';
 import Icon from '@/components/ui/Icon.astro';
 import { type Lang, useTranslations } from '@/i18n/ui';
-import { hero } from '@/lib/home-content';
-import { sectionIds } from '@/lib/navigation';
-import { linkOr, site } from '@/lib/settings';
+import { sectionContent } from '@/lib/home-content';
+import { sectionHref, sectionIds } from '@/lib/navigation';
+import { linkOr, siteSettings } from '@/lib/settings';
 
 interface Props {
   lang: Lang;
 }
 
-const t = useTranslations(Astro.props.lang);
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const hero = sectionContent('hero', lang);
+const site = siteSettings(lang);
 ---
 
 <Section id={sectionIds.hero} headingId="hero-title">
@@ -33,7 +36,7 @@ const t = useTranslations(Astro.props.lang);
       </h1>
       <p class="hero__intro">{hero.intro}</p>
       <div class="hero__actions">
-        <Button href={`#${sectionIds.prayerTimes}`} size="lg">
+        <Button href={sectionHref(sectionIds.prayerTimes, lang)} size="lg">
           {hero.primaryCta}
           <Icon name="forward" />
         </Button>

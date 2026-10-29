@@ -1,28 +1,58 @@
 {
-  "titleLines": ["שותפים", "בחיי הקהילה"],
-  "text": "התפילות, השיעורים, הקידושים וסעודות החג – כל אלה מתקיימים בזכות חברי הקהילה ותורמיה. אפשר לתרום פעם אחת או מדי חודש, להקדיש שיעור או לתת חסות לקידוש בשבת – לכבוד שמחה, לזכר יקיר, או פשוט כדי להיות שותפים.",
-  "cardTitle": "תרומה לקהילה",
-  "purposeLegend": "על מה התרומה?",
-  "purposes": [
-    {
-      "value": "one-time",
-      "label": "תרומה חד־פעמית"
-    },
-    {
-      "value": "monthly",
-      "label": "תרומה חודשית"
-    },
-    {
-      "value": "shiur",
-      "label": "הקדשת שיעור"
-    },
-    {
-      "value": "kiddush",
-      "label": "קידוש בשבת"
-    }
-  ],
-  "cardNote": "התשלום מתבצע באתר תרומות מאובטח.",
-  "amounts": [180, 360, 540],
-  "otherAmountLabel": "סכום אחר",
-  "cta": "המשך לתרומה מאובטחת"
+  "he": {
+    "titleLines": ["שותפים", "בחיי הקהילה"],
+    "text": "התפילות, השיעורים, הקידושים וסעודות החג – כל אלה מתקיימים בזכות חברי הקהילה ותורמיה. אפשר לתרום פעם אחת או מדי חודש, להקדיש שיעור או לתת חסות לקידוש בשבת – לכבוד שמחה, לזכר יקיר, או פשוט כדי להיות שותפים.",
+    "cardTitle": "תרומה לקהילה",
+    "purposeLegend": "על מה התרומה?",
+    "purposes": [
+      {
+        "value": "one-time",
+        "label": "תרומה חד־פעמית"
+      },
+      {
+        "value": "monthly",
+        "label": "תרומה חודשית"
+      },
+      {
+        "value": "shiur",
+        "label": "הקדשת שיעור"
+      },
+      {
+        "value": "kiddush",
+        "label": "קידוש בשבת"
+      }
+    ],
+    "cardNote": "התשלום מתבצע באתר תרומות מאובטח.",
+    "amounts": [180, 360, 540],
+    "otherAmountLabel": "סכום אחר",
+    "cta": "המשך לתרומה מאובטחת"
+  },
+  "en": {
+    "titleLines": ["Partners in", "our community life"],
+    "text": "Prayer, classes, kiddushim and festival meals – all of it is made possible by our members and donors. You can give once or every month, sponsor a shiur or a Shabbat kiddush – in honour of a simcha, in memory of a loved one, or simply to be a partner.",
+    "cardTitle": "Give to the community",
+    "purposeLegend": "What is your gift for?",
+    "purposes": [
+      {
+        "value": "one-time",
+        "label": "One-time gift"
+      },
+      {
+        "value": "monthly",
+        "label": "Monthly gift"
+      },
+      {
+        "value": "shiur",
+        "label": "Sponsor a shiur"
+      },
+      {
+        "value": "kiddush",
+        "label": "Shabbat kiddush"
+      }
+    ],
+    "cardNote": "Payment is made on a secure donation site.",
+    "amounts": [180, 360, 540],
+    "otherAmountLabel": "Other amount",
+    "cta": "Continue to secure donation"
+  }
 }

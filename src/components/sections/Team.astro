@@ -1,18 +1,23 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Section from '@/components/layout/Section.astro';
 import Avatar from '@/components/ui/Avatar.astro';
 import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
-import { team } from '@/lib/home-content';
+import type { Lang } from '@/i18n/ui';
+import { sectionContent } from '@/lib/home-content';
 import { sectionIds } from '@/lib/navigation';
 
-const members = await Promise.all(
-  (await getCollection('team'))
-    .sort((a, b) => a.data.order - b.data.order)
-    .map(async (member) => ({ ...member, Bio: (await render(member)).Content })),
-);
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const team = sectionContent('team', lang);
+const members = (await getCollection('team'))
+  .map((entry) => ({ id: entry.id, ...entry.data[lang] }))
+  .sort((a, b) => a.order - b.order);
 ---
 
 <Section id={sectionIds.team} tone="sand" headingId="team-title">
@@ -37,15 +42,10 @@ const members = await Promise.all(
             aria-pressed="false"
           >
             <span class="person__ring">
-              <Avatar
-                name={member.data.name}
-                initial={member.data.initial}
-                color={member.data.color}
-                photo={member.data.photo}
-              />
+              <Avatar name={member.name} color={member.color} photo={member.photo} />
             </span>
-            <span class="person__name">{member.data.name}</span>
-            <span class="person__role">{member.data.role}</span>
+            <span class="person__name">{member.name}</span>
+            <span class="person__role">{member.role}</span>
           </button>
         </li>
       ))}
@@ -59,20 +59,16 @@ const members = await Promise.all(
           data-bio={member.id}
           aria-labelledby={`bio-${member.id}-name`}
         >
-          <Avatar
-            name={member.data.name}
-            initial={member.data.initial}
-            color={member.data.color}
-            photo={member.data.photo}
-            size={116}
-          />
+          <Avatar name={member.name} color={member.color} photo={member.photo} size={116} />
           <div class="bio__text">
-            <p class="bio__role">{member.data.role}</p>
-            <h3 id={`bio-${member.id}-name`}>{member.data.name}</h3>
-            <member.Bio />
+            <p class="bio__role">{member.role}</p>
+            <h3 id={`bio-${member.id}-name`}>{member.name}</h3>
+            {member.bio.split(/\n\s*\n/).map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
           </div>
-          {member.data.contact && (
-            <Button href={member.data.contact}>
+          {member.contact && (
+            <Button href={member.contact}>
               <Icon name="mail" />
               {team.contactCta}
             </Button>

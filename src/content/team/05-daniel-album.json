@@ -1,0 +1,16 @@
+{
+  "he": {
+    "name": "דניאל אלבום",
+    "role": "גבאי",
+    "bio": "[כמה שורות על דניאל: מאז מתי הוא גבאי, ולמה כדאי לפנות אליו – עליות, שמחות, אזכרות.]",
+    "order": 5,
+    "color": "red"
+  },
+  "en": {
+    "name": "Daniel Album",
+    "role": "Gabbai",
+    "bio": "[A few lines about Daniel: how long he has been gabbai, and what to contact him about – aliyot, simchas, yahrzeits.]",
+    "order": 5,
+    "color": "red"
+  }
+}

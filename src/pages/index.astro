@@ -1,20 +1,5 @@
 ---
-import About from '@/components/sections/About.astro';
-import Donate from '@/components/sections/Donate.astro';
-import Hero from '@/components/sections/Hero.astro';
-import MidrashAviv from '@/components/sections/MidrashAviv.astro';
-import PrayerTimes from '@/components/sections/PrayerTimes.astro';
-import Team from '@/components/sections/Team.astro';
-import BaseLayout from '@/layouts/BaseLayout.astro';
-
-const lang = 'he';
+import HomePage from '@/components/pages/HomePage.astro';
 ---
 
-<BaseLayout lang={lang}>
-  <Hero lang={lang} />
-  <About lang={lang} />
-  <PrayerTimes lang={lang} />
-  <MidrashAviv lang={lang} />
-  <Team />
-  <Donate lang={lang} />
-</BaseLayout>
+<HomePage lang="he" />

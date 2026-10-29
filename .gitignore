@@ -20,3 +20,6 @@ infra/*.tfplan
 # logs and OS files
 npm-debug.log*
 .DS_Store
+
+# Local state from `wrangler dev`
+.wrangler/

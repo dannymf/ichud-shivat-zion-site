@@ -5,17 +5,23 @@ import Icon from '@/components/ui/Icon.astro';
 import ScheduleCard from '@/components/ui/ScheduleCard.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { type Lang, useTranslations } from '@/i18n/ui';
+import { sectionContent } from '@/lib/home-content';
 import { getWeekInfo } from '@/lib/jewish-calendar';
 import { sectionIds } from '@/lib/navigation';
-import { prayerTimes } from '@/lib/prayer-times';
-import { linkOr, site } from '@/lib/settings';
+import { linkOr, siteSettings } from '@/lib/settings';
 
 interface Props {
   lang: Lang;
 }
 
-const t = useTranslations(Astro.props.lang);
-const week = getWeekInfo(new Date(), { candleLightingMinutes: prayerTimes.candleLightingMinutes });
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const prayerTimes = sectionContent('prayerTimes', lang);
+const site = siteSettings(lang);
+const week = getWeekInfo(new Date(), {
+  candleLightingMinutes: prayerTimes.candleLightingMinutes,
+  lang,
+});
 const facts = [
   { label: t('prayerTimes.today'), value: `${week.today.weekday} · ${week.today.hebrewDate}` },
   { label: t('prayerTimes.candleLighting'), value: week.shabbat.candleLighting, isTime: true },

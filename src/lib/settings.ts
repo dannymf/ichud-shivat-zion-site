@@ -1,5 +1,7 @@
 import { z } from 'astro/zod';
 import siteJson from '@/content/settings/site.json';
+import type { Lang } from '@/i18n/ui';
+import { bilingual } from './localized';
 
 /** An external link that may not be set yet. The CMS saves an unset link as an empty string. */
 const optionalUrl = z.union([z.url(), z.literal('')]).default('');
@@ -26,18 +28,18 @@ const siteSchema = z.object({
     /** Name of the URL parameter that tells the provider what the gift is for (see donate.json). */
     purposeParam: z.string().default(''),
   }),
-  features: z.object({
-    /** Show the English language switch. Turn on once the English pages have content. */
-    english: z.boolean(),
-  }),
 });
 
 export type SiteSettings = z.infer<typeof siteSchema>;
 
 /** Site-wide settings, validated at build time so a bad CMS edit fails the build instead of the page. */
-export const site: SiteSettings = siteSchema.parse(siteJson);
+const settings = bilingual(siteSchema).parse(siteJson);
 
-const missingLinks = Object.entries(site.links)
+export function siteSettings(lang: Lang): SiteSettings {
+  return settings[lang];
+}
+
+const missingLinks = Object.entries(settings.he.links)
   .filter(([, url]) => url === '')
   .map(([name]) => name);
 
