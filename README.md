@@ -87,8 +87,8 @@ The code is complete; these are content and accounts that only the community can
 - [ ] Real prayer times, Midrash Aviv shiurim, team bios and photos (placeholders are marked with
       square brackets in `src/content/`)
 - [ ] The founding year in `src/content/home/about.json`
-- [ ] Links in `src/content/settings/site.json`: donation page, membership, full prayer schedule,
+- [ ] Links in `src/content/settings/site.json`: donation page, full prayer schedule,
       WhatsApp group, Midrash Aviv schedule (the build lists any that are still empty)
-- [ ] The donation provider's amount parameter, if it has one
+- [ ] The donation provider's parameter names for the amount and the purpose (`donation` in site.json)
 - [ ] Domain → `site` in `astro.config.mjs` (enables the canonical URL and share image)
 - [ ] Cloudflare deployment ([infra/README.md](infra/README.md)) and CMS sign-in ([docs/deployment.md](docs/deployment.md))

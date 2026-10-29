@@ -4,16 +4,16 @@
     "city": "תל אביב"
   },
   "phone": "03-5224047",
-  "officeHours": "ימים א׳–ה׳, 9:00–12:30",
+  "officeHours": "ימים א׳–ה׳, 9:00–17:00",
   "links": {
     "donate": "",
-    "membership": "",
     "prayerSchedule": "",
     "whatsapp": "",
     "midrashSchedule": ""
   },
   "donation": {
-    "amountParam": ""
+    "amountParam": "",
+    "purposeParam": "purpose"
   },
   "features": {
     "english": false

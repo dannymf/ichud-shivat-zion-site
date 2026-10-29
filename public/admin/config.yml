@@ -46,7 +46,6 @@ collections:
             widget: object
             fields:
               - { name: donate, label: דף התרומות, widget: string, required: false }
-              - { name: membership, label: תשלום דמי חבר, widget: string, required: false }
               - {
                   name: prayerSchedule,
                   label: לוח זמני התפילות המלא,
@@ -67,6 +66,11 @@ collections:
               - name: amountParam
                 label: שם הפרמטר לסכום
                 hint: אם ספק התרומות יודע לקבל סכום בכתובת (למשל amount), כתבו כאן את שם הפרמטר. אחרת השאירו ריק וכפתורי הסכומים לא יוצגו.
+                widget: string
+                required: false
+              - name: purposeParam
+                label: שם הפרמטר למטרת התרומה
+                hint: השם שספק התרומות מצפה לו עבור מטרת התרומה (חד־פעמית, חודשית, שיעור, קידוש). השאירו ריק כדי להסתיר את הבחירה.
                 widget: string
                 required: false
           - name: features
@@ -190,6 +194,13 @@ collections:
             field: { name: line, label: שורה, widget: string }
           - { name: text, label: פסקה, widget: text }
           - { name: cardTitle, label: כותרת הכרטיס, widget: string }
+          - { name: purposeLegend, label: שאלת מטרת התרומה, widget: string }
+          - name: purposes
+            label: מטרות תרומה
+            widget: list
+            fields:
+              - { name: label, label: תווית, widget: string }
+              - { name: value, label: ערך שנשלח לספק, widget: string }
           - { name: cardNote, label: הערה מתחת לכפתור, widget: string }
           - name: amounts
             label: סכומים מוצעים (בשקלים)
@@ -197,7 +208,6 @@ collections:
             field: { name: amount, label: סכום, widget: number, value_type: int, min: 1 }
           - { name: otherAmountLabel, label: תווית "סכום אחר", widget: string }
           - { name: cta, label: כפתור התרומה, widget: string }
-          - { name: membershipCta, label: קישור לדמי חבר, widget: string }
 
       - name: join
         label: וואטסאפ
