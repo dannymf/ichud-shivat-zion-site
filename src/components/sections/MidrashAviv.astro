@@ -1,0 +1,122 @@
+---
+import { Image } from 'astro:assets';
+import logo from '@/assets/images/midrash-aviv-logo.png';
+import Section from '@/components/layout/Section.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import ScheduleCard from '@/components/ui/ScheduleCard.astro';
+import { type Lang, useTranslations } from '@/i18n/ui';
+import { midrash } from '@/lib/home-content';
+import { sectionIds } from '@/lib/navigation';
+import { linkOr, site } from '@/lib/settings';
+
+interface Props {
+  lang: Lang;
+}
+
+const t = useTranslations(Astro.props.lang);
+---
+
+<Section id={sectionIds.midrash} tone="aviv" headingId="midrash-title">
+  <div slot="background" class="rays" aria-hidden="true"></div>
+
+  <div class="midrash">
+    <div class="midrash__text">
+      <p class="midrash__eyebrow">{midrash.eyebrow}</p>
+      <h2 id="midrash-title" class="midrash__title">
+        <Image src={logo} alt={t('nav.midrash')} widths={[320, 640]} sizes="320px" />
+      </h2>
+      <p class="midrash__intro">{midrash.intro}</p>
+      <p class="midrash__detail">{midrash.detail}</p>
+      <Button href={linkOr(site.links.midrashSchedule)} tone="ivory" size="lg" class="midrash__cta">
+        {midrash.fullScheduleCta}
+        <Icon name="external" />
+      </Button>
+    </div>
+
+    <div class="midrash__schedule">
+      <ScheduleCard
+        title={midrash.schedule.title}
+        subtitle={midrash.schedule.subtitle}
+        rows={midrash.schedule.rows}
+        variant="aviv"
+      />
+    </div>
+  </div>
+</Section>
+
+<style>
+  /* The sunburst behind the section, from Midrash Aviv's posters */
+  .rays {
+    position: absolute;
+    inset: 0;
+    background: repeating-conic-gradient(
+      from 0deg at 50% -20%,
+      var(--color-aviv) 0deg 2.5deg,
+      var(--color-aviv-ray) 2.5deg 5deg
+    );
+  }
+
+  .midrash {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
+  }
+
+  .midrash__text {
+    flex: 1 1 27.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+
+  .midrash__eyebrow {
+    font-family: var(--font-aviv-display);
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    color: var(--color-aviv-highlight);
+  }
+
+  .midrash__title img {
+    inline-size: 20rem;
+    max-inline-size: 100%;
+  }
+
+  .midrash__intro {
+    max-inline-size: 32.5rem;
+    font-size: var(--text-lg);
+  }
+
+  .midrash__detail {
+    max-inline-size: 32.5rem;
+    color: var(--color-aviv-muted);
+  }
+
+  .midrash__text :global(.midrash__cta) {
+    font-family: var(--font-aviv-display);
+    font-weight: 400;
+    font-size: 1.5625rem;
+    letter-spacing: 0.02em;
+    color: var(--color-aviv-ink);
+  }
+
+  .midrash__schedule {
+    flex: 1 1 31rem;
+    max-inline-size: 35rem;
+  }
+
+  @media (max-width: 47.99rem) {
+    .midrash__text {
+      align-items: center;
+      text-align: center;
+    }
+
+    .midrash__title img {
+      inline-size: 15rem;
+    }
+  }
+</style>

@@ -1,0 +1,273 @@
+---
+import { getCollection, render } from 'astro:content';
+import Section from '@/components/layout/Section.astro';
+import Avatar from '@/components/ui/Avatar.astro';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import { team } from '@/lib/home-content';
+import { sectionIds } from '@/lib/navigation';
+
+const members = await Promise.all(
+  (await getCollection('team'))
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (member) => ({ ...member, Bio: (await render(member)).Content })),
+);
+---
+
+<Section id={sectionIds.team} tone="sand" headingId="team-title">
+  <!--
+    Without JavaScript every bio is listed. The script below turns the circles into buttons
+    that show one bio at a time.
+  -->
+  <div class="team" data-team>
+    <SectionHeading id="team-title" eyebrow={team.eyebrow} title={team.title} align="center" />
+    <p class="team__hint" data-team-hint hidden>
+      {team.hint}
+    </p>
+
+    <ul class="team__people" role="list">
+      {members.map((member) => (
+        <li>
+          <button
+            type="button"
+            class="person"
+            data-person={member.id}
+            aria-controls={`bio-${member.id}`}
+            aria-pressed="false"
+          >
+            <span class="person__ring">
+              <Avatar
+                name={member.data.name}
+                initial={member.data.initial}
+                color={member.data.color}
+                photo={member.data.photo}
+              />
+            </span>
+            <span class="person__name">{member.data.name}</span>
+            <span class="person__role">{member.data.role}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+
+    <div class="team__bios">
+      {members.map((member) => (
+        <article
+          id={`bio-${member.id}`}
+          class="bio"
+          data-bio={member.id}
+          aria-labelledby={`bio-${member.id}-name`}
+        >
+          <Avatar
+            name={member.data.name}
+            initial={member.data.initial}
+            color={member.data.color}
+            photo={member.data.photo}
+            size={116}
+          />
+          <div class="bio__text">
+            <p class="bio__role">{member.data.role}</p>
+            <h3 id={`bio-${member.id}-name`}>{member.data.name}</h3>
+            <member.Bio />
+          </div>
+          {member.data.contact && (
+            <Button href={member.data.contact}>
+              <Icon name="mail" />
+              {team.contactCta}
+            </Button>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</Section>
+
+<script>
+  // Turn the team circles into buttons that each show one person's bio.
+  for (const root of document.querySelectorAll<HTMLElement>('[data-team]')) {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-person]')];
+    const bios = [...root.querySelectorAll<HTMLElement>('[data-bio]')];
+
+    const show = (id: string) => {
+      for (const button of buttons) {
+        button.setAttribute('aria-pressed', String(button.dataset.person === id));
+      }
+      for (const bio of bios) {
+        bio.hidden = bio.dataset.bio !== id;
+      }
+    };
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => show(button.dataset.person ?? ''));
+    }
+
+    root.querySelector<HTMLElement>('[data-team-hint]')?.removeAttribute('hidden');
+    root.dataset.enhanced = '';
+    if (buttons[0]?.dataset.person) show(buttons[0].dataset.person);
+  }
+</script>
+
+<style>
+  .team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .team__hint {
+    margin-block-start: calc(var(--space-4) * -1);
+    font-size: 1.0625rem;
+    color: var(--color-muted);
+  }
+
+  .team__people {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-6) var(--space-7);
+    padding: 0;
+    list-style: none;
+  }
+
+  .person {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    inline-size: 11.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-ink-soft);
+    text-align: center;
+  }
+
+  .team[data-enhanced] .person {
+    cursor: pointer;
+  }
+
+  .person__ring {
+    padding: 0.375rem;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    transition: border-color 150ms ease;
+  }
+
+  .person[aria-pressed='true'] .person__ring {
+    border-color: var(--color-navy);
+  }
+
+  .team[data-enhanced] .person:hover .person__ring {
+    border-color: color-mix(in srgb, var(--color-navy) 35%, transparent);
+  }
+
+  .team[data-enhanced] .person[aria-pressed='true']:hover .person__ring {
+    border-color: var(--color-navy);
+  }
+
+  .person__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5625rem;
+    line-height: 1.2;
+  }
+
+  .person[aria-pressed='true'] .person__name {
+    color: var(--color-navy);
+  }
+
+  .person__role {
+    margin-block-start: calc(var(--space-3) * -1);
+    font-size: var(--text-sm);
+    color: var(--color-gold-text);
+  }
+
+  .team__bios {
+    display: grid;
+    gap: var(--space-5);
+    inline-size: 100%;
+    max-inline-size: 61.25rem;
+  }
+
+  .bio {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-6) var(--space-7);
+    min-block-size: 14.75rem;
+    padding: 2.75rem 3.25rem;
+    background: var(--color-paper);
+    border-radius: 1.25rem;
+    outline: 1px solid var(--color-gold);
+    outline-offset: -0.5625rem;
+  }
+
+  .bio__text {
+    flex: 1 1 26rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .bio__role {
+    font-size: 1.0625rem;
+    font-weight: 500;
+    color: var(--color-gold-text);
+  }
+
+  .bio h3 {
+    font-size: 2.25rem;
+  }
+
+  .bio__text :global(p) {
+    color: var(--color-ink-soft);
+  }
+
+  /* Phones: one swipeable row of smaller circles, so the chosen bio sits right below it. */
+  @media (max-width: 40rem) {
+    .team__people {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: var(--space-4);
+      inline-size: calc(100% + 2 * var(--gutter));
+      margin-inline: calc(var(--gutter) * -1);
+      padding-inline: var(--gutter);
+      padding-block-end: var(--space-2);
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+    }
+
+    .team__people li {
+      scroll-snap-align: start;
+    }
+
+    .person {
+      inline-size: 6.25rem;
+      gap: var(--space-2);
+    }
+
+    .person :global(.avatar) {
+      inline-size: 5rem;
+      block-size: 5rem;
+    }
+
+    .person__name {
+      font-size: 1.125rem;
+    }
+
+    .person__role {
+      margin-block-start: calc(var(--space-2) * -1);
+      font-size: 0.875rem;
+      line-height: 1.3;
+    }
+
+    .bio {
+      flex-direction: column;
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>

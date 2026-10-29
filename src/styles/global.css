@@ -11,6 +11,11 @@
   margin: 0;
 }
 
+/* Keep the `hidden` attribute working even on elements whose display is set by a component. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   /* Sections snap gently into place; `proximity` never traps a section taller than the screen. */
   scroll-snap-type: y proximity;
