@@ -13,7 +13,6 @@ const siteSchema = z.object({
   officeHours: z.string().min(1),
   links: z.object({
     donate: optionalUrl,
-    membership: optionalUrl,
     prayerSchedule: optionalUrl,
     whatsapp: optionalUrl,
     midrashSchedule: optionalUrl,
@@ -24,6 +23,8 @@ const siteSchema = z.object({
      * Leave empty if the provider cannot pre-fill an amount; the amount buttons are then hidden.
      */
     amountParam: z.string().default(''),
+    /** Name of the URL parameter that tells the provider what the gift is for (see donate.json). */
+    purposeParam: z.string().default(''),
   }),
   features: z.object({
     /** Show the English language switch. Turn on once the English pages have content. */

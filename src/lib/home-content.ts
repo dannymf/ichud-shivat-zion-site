@@ -35,12 +35,14 @@ const donateSchema = z.object({
   titleLines: lines,
   text,
   cardTitle: text,
+  purposeLegend: text,
+  /** What the gift is for. `value` is what the donation provider receives (settings → purposeParam). */
+  purposes: z.array(z.object({ value: text, label: text })).max(6),
   cardNote: text,
   /** Suggested amounts in shekels. Shown only when the provider can pre-fill an amount. */
   amounts: z.array(z.number().int().positive()).max(6),
   otherAmountLabel: text,
   cta: text,
-  membershipCta: text,
 });
 
 const joinSchema = z.object({

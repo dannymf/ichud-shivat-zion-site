@@ -1,7 +1,6 @@
 ---
 import Section from '@/components/layout/Section.astro';
 import Button from '@/components/ui/Button.astro';
-import Icon from '@/components/ui/Icon.astro';
 import Logo from '@/components/ui/Logo.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { type Lang, useTranslations } from '@/i18n/ui';
@@ -15,9 +14,11 @@ interface Props {
 
 const t = useTranslations(Astro.props.lang);
 
-// The form sends the visitor to the donation provider. Amount buttons are shown only when the
-// provider accepts a pre-filled amount in the URL (settings → donation.amountParam).
-const { amountParam } = site.donation;
+// The form sends the visitor to the donation provider. The purpose and amount choices are sent as
+// URL parameters, so each group is shown only when its parameter name is set in the settings
+// (donation.purposeParam, donation.amountParam).
+const { amountParam, purposeParam } = site.donation;
+const showPurposes = purposeParam !== '' && donate.purposes.length > 0;
 const showAmounts = amountParam !== '' && donate.amounts.length > 0;
 const formatShekels = new Intl.NumberFormat('he-IL', {
   style: 'currency',
@@ -32,10 +33,6 @@ const defaultAmount = donate.amounts[Math.min(1, donate.amounts.length - 1)];
     <div class="donate__text">
       <SectionHeading id="donate-title" eyebrow={t('nav.donate')} title={donate.titleLines} />
       <p>{donate.text}</p>
-      <Button href={linkOr(site.links.membership)} variant="link">
-        {donate.membershipCta}
-        <Icon name="forward" />
-      </Button>
     </div>
 
     <div class="donate__card-wrap">
@@ -45,11 +42,28 @@ const defaultAmount = donate.amounts[Math.min(1, donate.amounts.length - 1)];
           <h3>{donate.cardTitle}</h3>
         </div>
 
+        {showPurposes && (
+          <fieldset class="donate__choices">
+            <legend class="donate__legend">{donate.purposeLegend}</legend>
+            {donate.purposes.map((purpose, index) => (
+              <label class="donate__choice donate__choice--text">
+                <input
+                  type="radio"
+                  name={purposeParam}
+                  value={purpose.value}
+                  checked={index === 0}
+                />
+                <span>{purpose.label}</span>
+              </label>
+            ))}
+          </fieldset>
+        )}
+
         {showAmounts && (
-          <fieldset class="donate__amounts">
+          <fieldset class="donate__choices">
             <legend class="sr-only">{t('donate.amountLegend')}</legend>
             {donate.amounts.map((amount) => (
-              <label class="donate__amount">
+              <label class="donate__choice">
                 <input
                   type="radio"
                   name={amountParam}
@@ -59,7 +73,7 @@ const defaultAmount = donate.amounts[Math.min(1, donate.amounts.length - 1)];
                 <span>{formatShekels(amount)}</span>
               </label>
             ))}
-            <label class="donate__amount">
+            <label class="donate__choice">
               <input type="radio" name={amountParam} value="" />
               <span>{donate.otherAmountLabel}</span>
             </label>
@@ -144,7 +158,7 @@ const defaultAmount = donate.amounts[Math.min(1, donate.amounts.length - 1)];
     font-size: 2rem;
   }
 
-  .donate__amounts {
+  .donate__choices {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-3);
@@ -152,11 +166,18 @@ const defaultAmount = donate.amounts[Math.min(1, donate.amounts.length - 1)];
     border: 0;
   }
 
-  .donate__amount {
+  .donate__legend {
+    margin-block-end: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-navy);
+  }
+
+  .donate__choice {
     position: relative;
   }
 
-  .donate__amount input {
+  .donate__choice input {
     position: absolute;
     opacity: 0;
     inset: 0;
@@ -164,10 +185,13 @@ const defaultAmount = donate.amounts[Math.min(1, donate.amounts.length - 1)];
     cursor: pointer;
   }
 
-  .donate__amount span {
+  .donate__choice span {
     display: grid;
     place-items: center;
-    block-size: 3.75rem;
+    min-block-size: 3.75rem;
+    padding: var(--space-2);
+    text-align: center;
+    line-height: 1.2;
     border: 1.5px solid rgb(15 37 82 / 0.35);
     border-radius: var(--radius-sm);
     font-size: 1.375rem;
@@ -175,13 +199,19 @@ const defaultAmount = donate.amounts[Math.min(1, donate.amounts.length - 1)];
     color: var(--color-navy);
   }
 
-  .donate__amount input:checked + span {
+  .donate__choice--text span {
+    min-block-size: 3.25rem;
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  .donate__choice input:checked + span {
     border-color: var(--color-navy);
     background: var(--color-navy);
     color: var(--color-ivory);
   }
 
-  .donate__amount input:focus-visible + span {
+  .donate__choice input:focus-visible + span {
     outline: 3px solid var(--glass-cobalt);
     outline-offset: 2px;
   }

@@ -15,7 +15,7 @@ interface Props {
 const t = useTranslations(Astro.props.lang);
 ---
 
-<Section id={sectionIds.about} headingId="about-title">
+<Section id={sectionIds.about} tone="sand" headingId="about-title">
   <div class="about">
     <div class="about__text">
       <SectionHeading id="about-title" eyebrow={t('nav.about')} title={about.titleLines} />

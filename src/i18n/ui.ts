@@ -24,7 +24,7 @@ const he = {
   'nav.team': 'צוות',
   'nav.donate': 'תרומה',
   'cta.donate': 'לתרומה',
-  'hero.arkAlt': 'ארון הקודש באולם התפילה, ומעליו הכתובת: הס כל בשר מפני ה׳',
+  'hero.arkAlt': 'אולם התפילה: ארון הקודש, הבימה והנברשת',
   'hero.windowAlt': 'חלון ויטראז׳ בבית הכנסת',
   'prayerTimes.today': 'היום',
   'prayerTimes.candleLighting': 'הדלקת נרות · ערב שבת',
