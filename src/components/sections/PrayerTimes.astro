@@ -6,7 +6,6 @@ import ScheduleCard from '@/components/ui/ScheduleCard.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { type Lang, useTranslations } from '@/i18n/ui';
 import { sectionContent } from '@/lib/home-content';
-import { getWeekInfo } from '@/lib/jewish-calendar';
 import { sectionIds } from '@/lib/navigation';
 import { linkOr, siteSettings } from '@/lib/settings';
 
@@ -18,38 +17,42 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const prayerTimes = sectionContent('prayerTimes', lang);
 const site = siteSettings(lang);
-const week = getWeekInfo(new Date(), {
-  candleLightingMinutes: prayerTimes.candleLightingMinutes,
-  lang,
-});
+// The date and Shabbat times depend on the day the page is opened, so they are filled in by the
+// script at the bottom of this file rather than at build time.
 const facts = [
-  { label: t('prayerTimes.today'), value: `${week.today.weekday} · ${week.today.hebrewDate}` },
-  { label: t('prayerTimes.candleLighting'), value: week.shabbat.candleLighting, isTime: true },
-  { label: t('prayerTimes.havdalah'), value: week.shabbat.havdalah, isTime: true },
-].filter((fact) => fact.value !== undefined);
+  { name: 'today', label: t('prayerTimes.today'), isTime: false },
+  { name: 'candleLighting', label: t('prayerTimes.candleLighting'), isTime: true },
+  { name: 'havdalah', label: t('prayerTimes.havdalah'), isTime: true },
+];
 ---
 
 <Section id={sectionIds.prayerTimes} tone="navy" headingId="prayer-times-title" density="compact">
-  <div class="prayer-times">
+  <div
+    class="prayer-times"
+    data-week
+    data-lang={lang}
+    data-candle-lighting-minutes={prayerTimes.candleLightingMinutes}
+  >
     <!-- No eyebrow: the Shabbat card already names the parasha, and the section has to fit on one screen. -->
     <SectionHeading id="prayer-times-title" title={prayerTimes.title} align="center" on="dark" />
 
     <dl class="week">
       {facts.map((fact) => (
-        <div class="week__fact">
+        <div class="week__fact" data-fact={fact.name}>
           <dt>{fact.label}</dt>
           <dd class:list={{ week__time: fact.isTime }}>
-            {fact.isTime ? (
-              <time datetime={fact.value} dir="ltr">
-                {fact.value}
-              </time>
-            ) : (
-              fact.value
-            )}
+            {fact.isTime ? <time dir="ltr" data-value /> : <span data-value />}
           </dd>
         </div>
       ))}
     </dl>
+    <noscript>
+      <style is:inline>
+        .prayer-times .week {
+          display: none !important;
+        }
+      </style>
+    </noscript>
 
     <!-- Focusable so the row can be scrolled with the keyboard where it scrolls (phones). -->
     <div
@@ -66,10 +69,11 @@ const facts = [
       />
       <ScheduleCard
         title={prayerTimes.shabbat.title}
-        subtitle={week.shabbat.title}
         rows={prayerTimes.shabbat.rows}
         density="compact"
-      />
+      >
+        <span slot="subtitle" data-parasha></span>
+      </ScheduleCard>
     </div>
 
     <Button href={linkOr(site.links.prayerSchedule)} variant="link" tone="ivory">
@@ -98,12 +102,21 @@ const facts = [
     border-radius: var(--radius-md);
   }
 
+  /* Hold the strip's space until the script has filled it in, so the page doesn't jump. */
+  .prayer-times:not([data-ready]) .week {
+    visibility: hidden;
+  }
+
   .week__fact {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: var(--space-3) var(--space-4);
     text-align: center;
+  }
+
+  .week__fact[hidden] {
+    display: none;
   }
 
   .week__fact + .week__fact {
@@ -117,6 +130,7 @@ const facts = [
 
   .week dd {
     margin: 0;
+    min-block-size: 1lh;
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.375rem;
@@ -195,3 +209,57 @@ const facts = [
     }
   }
 </style>
+
+<script>
+  import type { Lang } from '@/i18n/ui';
+  import type { WeekInfo } from '@/lib/jewish-calendar';
+
+  const root = document.querySelector<HTMLElement>('[data-week]');
+
+  if (root) {
+    const lang: Lang = root.dataset.lang === 'en' ? 'en' : 'he';
+    const candleLightingMinutes = Number(root.dataset.candleLightingMinutes);
+
+    // A missing value hides its fact (e.g. no candle lighting when Shabbat has no Friday evening).
+    const setFact = (name: string, value: string | undefined) => {
+      const fact = root.querySelector<HTMLElement>(`[data-fact="${name}"]`);
+      const target = fact?.querySelector<HTMLElement>('[data-value]');
+      if (!fact || !target) return;
+      fact.hidden = value === undefined;
+      target.textContent = value ?? '';
+      if (target instanceof HTMLTimeElement && value) target.dateTime = value;
+    };
+
+    const render = (week: WeekInfo) => {
+      setFact('today', `${week.today.weekday} · ${week.today.hebrewDate}`);
+      setFact('candleLighting', week.shabbat.candleLighting);
+      setFact('havdalah', week.shabbat.havdalah);
+      const parasha = root.querySelector('[data-parasha]');
+      if (parasha) parasha.textContent = week.shabbat.title ?? '';
+      root.dataset.ready = '';
+    };
+
+    const start = async () => {
+      // Hebcal is about 60 kB gzipped and the section is below the fold, so it loads when idle.
+      const { getWeekInfo } = await import('@/lib/jewish-calendar');
+      const refresh = () => render(getWeekInfo(new Date(), { candleLightingMinutes, lang }));
+      refresh();
+
+      // A tab left open overnight, or restored from the back/forward cache, still shows the old day.
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) refresh();
+      });
+      window.addEventListener('pageshow', (event) => {
+        if (event.persisted) refresh();
+      });
+    };
+
+    const startSafely = () =>
+      void start().catch((error: unknown) =>
+        console.error('Could not load the Hebrew calendar', error),
+      );
+
+    if ('requestIdleCallback' in window) requestIdleCallback(startSafely);
+    else setTimeout(startSafely, 200);
+  }
+</script>

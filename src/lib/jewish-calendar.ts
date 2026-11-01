@@ -1,8 +1,9 @@
 /**
- * Dates and Shabbat times for the prayer-times section, computed with Hebcal at build time.
+ * Dates and Shabbat times for the prayer-times section, computed with Hebcal.
  *
- * Everything here is in Israel time, whatever the time zone of the machine running the build.
- * The site is rebuilt every night, so "today" and "this Shabbat" stay current.
+ * This runs in the visitor's browser (see PrayerTimes.astro), so "today" and "this Shabbat" are
+ * always current without rebuilding the site. Everything here is in Israel time, whatever the
+ * time zone of the machine it runs on.
  */
 import {
   CandleLightingEvent,

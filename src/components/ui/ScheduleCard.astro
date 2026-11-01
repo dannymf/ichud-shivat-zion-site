@@ -21,7 +21,12 @@ const { title, subtitle, rows, variant = 'default', density = 'normal' } = Astro
 <article class:list={['schedule', `schedule--${variant}`, `schedule--${density}`]}>
   <header class="schedule__head">
     <Plaque variant={variant}>{title}</Plaque>
-    {subtitle && <p class="schedule__subtitle">{subtitle}</p>}
+    {(subtitle || Astro.slots.has('subtitle')) && (
+      <p class="schedule__subtitle">
+        {subtitle}
+        <slot name="subtitle" />
+      </p>
+    )}
   </header>
   <dl class="schedule__rows">
     {rows.map((row) => (

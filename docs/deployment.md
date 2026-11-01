@@ -22,9 +22,9 @@ checked by `ci.yml` but not deployed, so there are no preview URLs.
 
 ## 2. Today's date and Shabbat times
 
-These are currently computed at build time (`src/lib/jewish-calendar.ts`), so they only change when
-the site is next deployed. Run the **Deploy** workflow from the **Actions** tab to refresh them, or
-move the calculation into the browser so no rebuild is needed.
+These are computed in the visitor's browser (`src/lib/jewish-calendar.ts`, loaded by
+`PrayerTimes.astro` when the page is idle), so the site never needs a rebuild to stay current.
+Nothing to set up: the calculation is local and makes no network requests.
 
 ## 3. CMS sign-in (sveltia-cms-auth)
 
